@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
 			TypeTransfersTableSeeder::class,
             StatusUserTableSeeder::class,
             StatusRequestTableSeeder::class,
+            ActionsTableSeeder::class,
             LaravelEntrustSeeder::class,
         ]);
     }

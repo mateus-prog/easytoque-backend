@@ -29,10 +29,4 @@ class LogController extends Controller
 
         return $this->success($logs, HttpStatus::SUCCESS);
     }
-
-    public function filterLogs(Request $request){
-        $logs = $this->logService->filterLogs($request);
-
-        return $this->success($logs, HttpStatus::SUCCESS);
-    }
 }

@@ -33,12 +33,24 @@ class UserBankService
     */
     public function getUserBankByUser($userId)
     {
+        $user = $this->userRepository->findById($userId);
         $bankUser = $this->userBankRepository->findByFieldWhereReturnObject('user_id', '=', $userId);
         
         $bank = $this->bankRepository->findById($bankUser[0]->bank_id);
         $bankUser[0]->bank_id = $bank->name . ' (cód: '. $bank->code.')';
+        $bankUser[0]->hash_id = $user['hash_id'];
         
         return $bankUser;
+    }
+
+    /**
+     * Selecione os usuarios conforme o role
+     * @param  int  $id
+     * @return array
+    */
+    public function getUserBankEditByUser($userId)
+    {
+        return $this->userBankRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'bank_id, agency, agency_digit, checking_account, checking_account_digit, pix');
     }
 
     /**

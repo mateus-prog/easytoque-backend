@@ -58,6 +58,7 @@ class RouteServiceProvider extends ServiceProvider
             $this->loadApiRoute("clicksign");
             $this->loadApiRoute("status-request");
             $this->loadApiRoute("request");
+            $this->loadApiRoute("action");
 
             Route::middleware('web')
                 ->namespace($this->namespace)

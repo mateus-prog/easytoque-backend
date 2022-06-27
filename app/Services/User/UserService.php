@@ -6,6 +6,7 @@ use App\Repositories\Elouquent\UserRepository;
 use App\Repositories\Elouquent\StatusUserRepository;
 use App\Repositories\Elouquent\RolesRepository;
 use App\Repositories\Elouquent\UserStoreRepository;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
@@ -121,6 +122,28 @@ class UserService
     {
         try {
             return $this->userRepository->update($id, $request);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateBlock($id)
+    {
+        try {
+            $user = $this->findById($id);
+            $status_user_id = $user->status_user_id == 1 ? 2 : 1;
+
+            User::where('id', $id)
+                ->update('status_user_id', $status_user_id);
+
+            //return $this->userRepository->update($id, $request);
+            return true;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

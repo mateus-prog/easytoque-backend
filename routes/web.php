@@ -43,15 +43,3 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 */
-
-Route::get('/teste', function (Request $request) {
-    $urlStore = 'https://loja.easytoque.com.br/createStore.php';
-
-    $response = Http::asForm()->post($urlStore, [
-        'store_name' => 'Mateus Teste',
-        'rev_id' => 202,
-    ]);
-
-    dump(time());
-    dd($response->json());
-});

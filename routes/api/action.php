@@ -1,15 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LogController;
+use App\Http\Controllers\ActionsController;
 
 /*
 |--------------------------------------------------------------------------
-| Menu Routes
+| Action Routes
 |--------------------------------------------------------------------------
 |
 */
 
-Route::group(["middleware" => "auth:sanctum"], function () {
-    Route::get("/logs", [LogController::class, 'index']);
-});
+Route::get("/actions", [ActionsController::class, 'index']);

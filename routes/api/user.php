@@ -40,4 +40,5 @@ Route::group(["middleware" => "auth:sanctum"], function () {
         );
     });
     Route::put("/users/{userId}", [UserController::class, 'update']);
+    Route::put("/users/block/{userId}", [UserController::class, 'blockOrUnblock']);
 });

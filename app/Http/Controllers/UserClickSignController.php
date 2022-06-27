@@ -50,7 +50,7 @@ class UserClickSignController extends Controller
         }
     }
 
-    public function notificationEmail($userId)
+    public function notificationMail($userId)
     {
         $userClickSign = $this->clickSignService->findByUserClickSign($userId);
         $request_signature_key = $userClickSign[0]['request_signature_key'];
@@ -58,7 +58,7 @@ class UserClickSignController extends Controller
             
             $message = 'Por favor, assine o documento digitalmente para concluir seu cadastro como parceiro Easytoque';
 
-            $resultClickSign = $this->clickSignService->notificationEmail($request_signature_key, $message);
+            $resultClickSign = $this->clickSignService->notificationMail($request_signature_key, $message);
 
             if(!empty($resultClickSign['errors'])){
                 return $this->error($resultClickSign['errors'], HttpStatus::SERVER_ERROR);    
@@ -67,6 +67,15 @@ class UserClickSignController extends Controller
             }
         }else{
             return $this->error('A Mensagem não pode ser enviada.', HttpStatus::SERVER_ERROR);
+        }
+    }
+
+    public function viewDocument($userId)
+    {
+        $resultClickSign = $this->clickSignService->viewDocument($userId);
+
+        if(!empty($resultClickSign['errors'])){
+            return $this->error($resultClickSign['errors'], HttpStatus::SERVER_ERROR);    
         }
     }
 }

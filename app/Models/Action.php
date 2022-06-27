@@ -8,16 +8,16 @@ use App\Traits\TraitBuilder;
 use App\Traits\TraitCollection;
 use App\Helpers\Format;
 
-class Log extends BaseModel
+class Action extends BaseModel
 {
     use TraitCollection, TraitBuilder;
 
-    public $table = 'logs';
+    public $table = 'actions';
 	public $fillable = [
-        'message', 'status', 'action_id', 'user_changed_id', 'user_modified_id', 'updated_at'
+        'name', 'display_name', 'updated_at'
     ];
 	public $searchable = [
-        'message', 'status', 'action_id', 'user_changed_id', 'user_modified_id', 'updated_at'
+        'name', 'display_name', 'updated_at'
     ];
 
     public $timestamps = true;
@@ -26,11 +26,8 @@ class Log extends BaseModel
     {
         return (object) [
             "id" => $this->id,
-            "user_changed_id" => $this->user_changed_id,
-            "user_modified_id" => $this->user_modified_id,
-            "action_id" => $this->action_id,
-            "status" => $this->status,
-            "message" => $this->message,
+            "name" => $this->name,
+            "display_name" => $this->display_name,
             "created_at" => Format::formatDateTime($this->created_at),
             "updated_at" => Format::formatDateTime($this->updated_at),
         ];

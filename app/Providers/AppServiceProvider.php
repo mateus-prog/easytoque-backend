@@ -82,5 +82,15 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\ReasonRepositoryInterface', 
             'App\Repositories\Elouquent\ReasonRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\ActionRepositoryInterface', 
+            'App\Repositories\Elouquent\ActionRepository'
+        );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\LogRepositoryInterface', 
+            'App\Repositories\Elouquent\LogRepository'
+        );
     }
 }

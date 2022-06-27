@@ -4,7 +4,7 @@ namespace App\Services\Log;
 
 use App\Repositories\Elouquent\UserRepository;
 use App\Repositories\Elouquent\LogRepository;
-use App\Models\Log;
+use App\Repositories\Elouquent\ActionRepository;
 use Exception;
 
 class LogService
@@ -13,6 +13,7 @@ class LogService
     {
         $this->userRepository = new UserRepository();
         $this->logRepository = new LogRepository();
+        $this->actionRepository = new ActionRepository();
     }
 
     /**
@@ -24,26 +25,14 @@ class LogService
         $logs = $this->logRepository->all();
 
         foreach($logs as $log){
-            $user = $this->userRepository->findById($log->user_id);
-            $log->user_id = $user->first_name;
-        }
+            $user = $this->userRepository->findById($log->user_changed_id);
+            $log->user_changed_id = $user->first_name . ' ' . $user->last_name;
 
-        return $logs;
-    }
+            $user = $this->userRepository->findById($log->user_modified_id);
+            $log->user_modified_id = $user->first_name . ' ' . $user->last_name;
 
-    public function filterLogs($request)
-    {
-        $logs = $this->logRepository->findByFieldWhereReturnObject("message", "like", "%".$request["message"]."%");
-        //$logs = Log::where("message", "like", "%".$request["message"]."%");
-        /*if($request["user_id"] != ""){
-            $logs = $logs->where("user_id", $request["user_id"]);
-        }*/
-
-        //$logsToArray = $logs->get()->toArray();
-
-        foreach($logs as $log){
-            $user = $this->userRepository->findById($log->user_id);
-            $log->user_id = $user->first_name;
+            $action = $this->actionRepository->findById($log->action_id);
+            $log->action_id = $action->display_name;
         }
 
         return $logs;

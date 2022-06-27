@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('log', function (Blueprint $table) {
+        Schema::create('actions', function (Blueprint $table) {
             $table->id();
-            $table->string('message', 255);
-            $table->unsignedBigInteger('user_id');
+            $table->string('name', 20);
+            $table->string('display_name', 20);
             $table->timestamps();
-
-            $table
-                ->foreign('user_id')
-                ->references('id')
-                ->on('users');
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('log');
+        Schema::dropIfExists('actions');
     }
 };

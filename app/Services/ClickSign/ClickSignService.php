@@ -70,10 +70,13 @@ class ClickSignService
         $user = $this->userRepository->findById($userId);
         $userClickSign = $this->findByUserClickSign($userId);
 
+        $idUserLog = $userId;
+
         $role = $this->rolesRepository->findById($user->role_id);
 
         if(empty($userClickSign))
         {
+
             $name = trim($user->first_name).' '.trim($user->last_name);
             $email = trim($user->email);
 
@@ -96,9 +99,11 @@ class ClickSignService
             
             if(!empty($resultClickSign['errors']))
             {
-                $messageLog = 'ERRO: Ao adicionar o Signatário para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
-                
-                $log = Log::createLog($messageLog);
+                $messageLog = 'Signatário na ClickSign';
+                $actionId = 1;
+                $idUserLog = $user->id;
+
+                $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
                 $this->logRepository->store($log);
 
                 return $resultClickSign['errors'];    
@@ -118,9 +123,11 @@ class ClickSignService
             $this->createDocumentTemplate($userId);
         }
 
-        $messageLog = 'Adicionou o Signatário para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
+        $messageLog = 'Signatário na ClickSign';
+        $actionId = 1;
+        $idUserLog = $user->id;
 
-        $log = Log::createLog($messageLog);
+        $log = Log::createLog($idUserLog, $messageLog, $actionId, true);
         $this->logRepository->store($log);
 	}
 
@@ -139,6 +146,8 @@ class ClickSignService
         $userClickSign = $userClickSign[0];
         $request_signature_key = $userClickSign['request_signature_key'];
         
+        $idUserLog = $userId;
+
         $user = $this->userRepository->findById($userId);
         $role = $this->rolesRepository->findById($user->role_id);
 
@@ -164,9 +173,11 @@ class ClickSignService
             
             if(!empty($resultClickSign['errors']))
             {
-                $messageLog = 'ERRO: Ao adicionar o vinculo entre Signatário e o Contrato para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
-
-                $log = Log::createLog($messageLog);
+                $messageLog = 'Vinculo entre Signatário e o Contrato na ClickSign';
+                $actionId = 1;
+                $idUserLog = $user->id;
+        
+                $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
                 $this->logRepository->store($log);
 
                 return $resultClickSign['errors'];    
@@ -180,18 +191,21 @@ class ClickSignService
                 $this->update($id, ['request_signature_key' => $request_signature_key]);
                 
                 //enviar whatsapp
-                $this->notificationEmail($request_signature_key, $message);
+                $this->notificationMail($request_signature_key, $message);
             }
         }
         else
         {
             //enviar whatsapp
-            $this->notificationEmail($request_signature_key, $message);
+            $this->notificationMail($request_signature_key, $message);
         }
 
-        $messageLog = 'Adicionou o vinculo entre Signatário e o Contrato para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
+        $messageLog = 'Vinculo entre Signatário e o Contrato na ClickSign';
 
-        $log = Log::createLog($messageLog);
+        $actionId = 1;
+        $idUserLog = $user->id;
+
+        $log = Log::createLog($idUserLog, $messageLog, $actionId, true);
         $this->logRepository->store($log);
 	}
 
@@ -218,6 +232,8 @@ class ClickSignService
         $userClickSign = $this->findByUserClickSign($userId);
         $document_key = $userClickSign[0]['document_key'];
         
+        $idUserLog = $userId;
+
         $user = $this->userRepository->findById($userId);
         $role = $this->rolesRepository->findById($user->role_id);
 
@@ -277,9 +293,12 @@ class ClickSignService
             //update no banco de dados
             if(!empty($resultClickSign['errors'])){
 
-                $messageLog = 'ERRO: Ao adicionar o Contrato para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
+                $messageLog = 'Contrato na ClickSign';
 
-                $log = Log::createLog($messageLog);
+                $actionId = 1;
+                $idUserLog = $user->id;
+
+                $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
                 $this->logRepository->store($log);
 
                 return $resultClickSign['errors'];    
@@ -298,15 +317,18 @@ class ClickSignService
             $this->createSignerDocument($userId);
         }
         
-        $messageLog = 'Adicionou um Contrato para o '.$role['display_name'].' '.$user->first_name . ' ' . $user->last_name;
+        $messageLog = 'Contrato na ClickSign';
+        $actionId = 1;
+        $idUserLog = $user->id;
 
-        $log = Log::createLog($messageLog);
+        $log = Log::createLog($idUserLog, $messageLog, $actionId, true);
         $this->logRepository->store($log);
 	}
 
     public function viewDocument($userId)
     {
         $userClickSign = $this->findByUserClickSign($userId);
+        $idUserLog = $userId;
         if(!empty($userClickSign))
         {
             $document_key = $userClickSign[0]['document_key'];
@@ -318,16 +340,28 @@ class ClickSignService
                 $resultClickSign = Http::get($host)->json();
                 //update no banco de dados
                 if(!empty($resultClickSign['errors'])){
-                    return $resultClickSign['errors']; 
+                    $messageLog = $resultClickSign['errors']; 
+                    $actionId = 1;
+                    
+                    $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
+                    $this->logRepository->store($log);
                 }else{
                     if($resultClickSign['document']['status'] == 'closed'){
                         $this->userRepository->update($userId, ['status_user_id' => '1']);
                     }else{
-                        return 'Documento ainda não assinado ou cancelado';
+                        $messageLog = "Documento ainda não assinado ou cancelado na ClickSign";
+                        $actionId = 1;
+                        
+                        $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
+                        $this->logRepository->store($log);
                     }
                 }
             }else{
-                return 'Documento não encontrado';
+                $messageLog = "Documento não encontrado na ClickSign";
+                $actionId = 1;
+                        
+                $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
+                $this->logRepository->store($log);
             }
         }
     }
@@ -365,7 +399,7 @@ class ClickSignService
     }
 
     //enviar notificação por email
-	public function notificationEmail($request_signature_key, $message) 
+	public function notificationMail($request_signature_key, $message) 
     {
         $host = $this->_environment.'/api/v1/notifications?access_token='.$this->_token;
 
