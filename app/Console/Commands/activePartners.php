@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\User\UserService;
+use App\Services\User\UserStoreService;
 use App\Services\ClickSign\ClickSignService;
 use App\Services\Mail\MailService;
+use App\Services\Store\StoreService;
 
 class activePartners extends Command
 {
@@ -24,19 +26,25 @@ class activePartners extends Command
     protected $description = 'Comando que ativa os parceiros que assinaram o contrato da clicksign e que se encontram pendentes';
 
     protected $userService;
+    protected $userStoreService;
     protected $clickSignService;
     protected $mailService;
+    protected $storeService;
 
     public function __construct(
         UserService $userService,
+        UserStoreService $userStoreService,
         ClickSignService $clickSignService,
-        MailService $mailService
+        MailService $mailService,
+        StoreService $storeService,
     )
     {
         parent::__construct();
         $this->userService = $userService;
+        $this->userStoreService = $userStoreService;
         $this->clickSignService = $clickSignService;
         $this->mailService = $mailService;
+        $this->storeService = $storeService;
     }
 
     /**
@@ -57,6 +65,18 @@ class activePartners extends Command
                 $user = $this->userService->findById($user->id);
                 if($user->status_user_id == 1)
                 {   
+                    //incluir a loja no banco de dados
+                    //$response = $this->storeService->storeMagento($user->id);
+                    //$storeId = $response['loja_id'];
+                    $storeId = 1;
+                    
+                    $id = $this->userStoreService->getUserStoreByUser($user->id);
+                    $data = array(
+                        'store_id' => $storeId
+                    );
+
+                    $this->userStoreService->update($id, $data);
+                    
                     //sendMail complete register user
                     $mailRecipient = $user->email;
                     
