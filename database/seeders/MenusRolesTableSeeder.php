@@ -19,7 +19,7 @@ class MenusRolesTableSeeder extends Seeder
     {
         $this->smartySeeder(new Model, [
             ['id' => 1, 'role_id' => '4', 'menu_id' => '1'],
-            ['id' => 4, 'role_id' => '4', 'menu_id' => '2'],
+            ['id' => 2, 'role_id' => '4', 'menu_id' => '2'],
             ['id' => 3, 'role_id' => '4', 'menu_id' => '3'],
             ['id' => 4, 'role_id' => '4', 'menu_id' => '4'],
             ['id' => 6, 'role_id' => '4', 'menu_id' => '5'],

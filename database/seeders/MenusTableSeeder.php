@@ -20,7 +20,7 @@ class MenusTableSeeder extends Seeder
         $this->smartySeeder(new Model, [
             ['id' => 1, 'name' => 'Dashboard', 'icon' => 'fas fa-home', 'url' => ''],
             ['id' => 2, 'name' => 'Vendas', 'icon' => 'fas fa-dollar-sign', 'url' => ''],
-            ['id' => 3, 'name' => 'Comissões', 'icon' => 'fas fa-hand-holding-usd', 'url' => ''],
+            ['id' => 3, 'name' => 'Comissões', 'icon' => 'fas fa-hand-holding-usd', 'url' => '/commissions'],
             ['id' => 4, 'name' => 'Alterar Logo', 'icon' => 'fas fa-image', 'url' => ''],
             ['id' => 5, 'name' => 'Materiais Divulgação', 'icon' => 'fas fa-bullhorn', 'url' => 'https://www.easytoque.com.br/materiais-didaticos/'],
             ['id' => 6, 'name' => 'Copiar link da loja', 'icon' => 'fas fa-link', 'url' => ''],

@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('user_bank_data', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('bank_id')->nullable();
-            $table->integer('agency')->nullable();
-            $table->integer('agency_digit')->nullable();
-            $table->integer('checking_account')->nullable();
-            $table->integer('checking_account_digit')->nullable();
+            $table->string('agency', 3)->nullable();
+            $table->string('agency_digit', 1)->nullable();
+            $table->string('checking_account', 3)->nullable();
+            $table->string('checking_account_digit', 1)->nullable();
             $table->string('pix', 150)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('type_transfers_id')->nullable();
