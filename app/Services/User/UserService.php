@@ -6,6 +6,7 @@ use App\Repositories\Elouquent\UserRepository;
 use App\Repositories\Elouquent\StatusUserRepository;
 use App\Repositories\Elouquent\RolesRepository;
 use App\Repositories\Elouquent\UserStoreRepository;
+use App\Repositories\Elouquent\UserCorporateRepository;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Exception;
@@ -18,6 +19,7 @@ class UserService
         $this->statusUserRepository = new StatusUserRepository();
         $this->rolesRepository = new RolesRepository();
         $this->userStoreRepository = new UserStoreRepository();
+        $this->userCorporateRepository = new UserCorporateRepository();
     }
 
     /**
@@ -40,6 +42,7 @@ class UserService
         $users = $this->userRepository->findByFieldWhereReturnObject('role_id', '=', $roleId);
         
         foreach($users as $user){
+            $user->name = $user->first_name . ' ' . $user->last_name;
             $user->status_user_id = $this->statusUserRepository->findById($user->status_user_id);
             $user->status = $user->status_user_id->status;
             $user->status_user_id = $user->status_user_id->name;
@@ -49,7 +52,11 @@ class UserService
 
             if($roleId == 4){
                 $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'commission');
-                $user->commission = str_replace('.', ',', $store[0]['commission']) . '%';
+                $user->commission = str_replace('.', ',', $store[0]['commission']);
+
+                $corporate = $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'cnpj, state_id');
+                $user->cnpj = $corporate[0]['cnpj'];
+                //$user->state_id = $corporate[0]['state_id'];
             }
         }
 
@@ -121,6 +128,10 @@ class UserService
     public function update($id, $request)
     {
         try {
+            if($request['password']){
+                $request['password'] = Hash::make($request['password']);
+            }
+
             return $this->userRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -133,17 +144,29 @@ class UserService
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateBlock($id)
+    public function updateUserActive($id, $request)
     {
         try {
-            $user = $this->findById($id);
-            $status_user_id = $user->status_user_id == 1 ? 2 : 1;
+            $request['status_user_id'] = 1;
 
-            User::where('id', $id)
-                ->update('status_user_id', $status_user_id);
+            return $this->userRepository->update($id, $request);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
 
-            //return $this->userRepository->update($id, $request);
-            return true;
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function updateUserBlocked($id, $request)
+    {
+        try {
+            $request['status_user_id'] = 2;
+
+            return $this->userRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

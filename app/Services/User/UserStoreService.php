@@ -12,11 +12,10 @@ class UserStoreService
         $this->userStoreRepository = new UserStoreRepository();
     }
 
-    public function store(array $request, int $storeId, int $userId)
+    public function store(array $request, int $userId)
     {
         try {
             $request['user_id'] = $userId;
-            $request['store_id'] = $storeId;
             return $this->userStoreRepository->store($request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
@@ -42,7 +41,7 @@ class UserStoreService
      */
     public function edit($id)
     {
-        return $this->findById($id);
+        return $this->userStoreService->findById($id);
     }
 
     /**
@@ -54,10 +53,8 @@ class UserStoreService
      */
     public function update($id, $request)
     {
-        $user = $this->findById($id);
-
         try {
-            return $this->userStoreRepository->update($user, $request);
+            return $this->userStoreRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -82,9 +79,20 @@ class UserStoreService
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function getUserStoreByUser($userId){
+    public function getUserStoreByUserComission($userId){
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'commission');
         return $store[0];
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function getUserStoreByUser($userId){
+        $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'id');
+        return $store[0]['id'];
     }
 
 }

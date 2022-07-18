@@ -46,9 +46,11 @@ class MailService
 
             $mailTo = 'parceiros@toquecolor.com.br';
             $clientId = '518263093860-sv6g3pmjkg544i1uc7am61n8ivvf04ch.apps.googleusercontent.com';
-            $clientSecret = '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';
-            //$refreshToken = '1//0feqK4FYccjJICgYIARAAGA8SNwF-L9Ire3JOWgHNRMAtMeCaB0hd7G6uPG98JrI5Wqu9oQVfiKxG1r-E6Z2Sl7gcsrnbYeXSrTg';
-            $refreshToken = '1//09_4tEpRhi0GbCgYIARAAGAkSNwF-L9IriUb1vhX2afmKeBFuii8f2yyPS7EQ-VlxEvLDjs_K3tBwadWFTild1ZnOuvrATUWYynE';
+		    $clientSecret = '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';
+            //$refreshToken = '1//0fVp3ZxiOZRz8CgYIARAAGA8SNwF-L9IruqCJA-c2zfJnz812FtJLjRG9HVSR3jkyEbYVdYr5H4rD7tw1YRD3ik3jlmMm8-KTRi8';
+		    //$refreshToken = '1//095p1uxhhmp_cCgYIARAAGAkSNwF-L9Ir-bhAGxpvOymsmjAEJUyYtc_M5IBlWiilXkN15F2aLBqqDm5Dzh-9zN-al0ecZfYIaXU';
+            $refreshToken = '1//09HSE5cbEo8dSCgYIARAAGAkSNwF-L9IrXmzs4TXrARGqiirNLRsfVaWEHKEG-Cjz0W6TGULsPwzaAWpLRljhcVYaEvq8QudgjWc';
+            
             $provider = new Google(
                 [
                     'clientId' => $clientId,
@@ -178,7 +180,7 @@ class MailService
     public function createMailWelcomeBody($name)
     {
         $body = '
-        <p>Ol&aacute;, '.$name.'</p>
+        <p>Ol&aacute;, '.utf8_decode($name).'</p>
         <p style="color: green;">Muito obrigado pela confian&ccedil;a e o interesse em se tornar um parceiro <b>Easytoque</b>.</p>
         <p>Seu cadastro foi aprovado.</p>
         <p>Para lhe auxiliar compartilho as pr&oacute;ximas etapas:</p>
@@ -201,7 +203,7 @@ class MailService
     public function createMailDataBankUserBody($name, $link)
     {
         $body = '
-        <p>Ol&aacute;, <b>'.$name.'</b>.</p><br>
+        <p>Ol&aacute;, <b>'.utf8_decode($name).'</b>.</p><br>
         <p>
             Estamos entrando em contato pois precisamos que voc&ecirc; preencha o restante das informa&ccedil;&otilde;es em seu cadastro de parceiro Easytoque e assine o contrato.
         </p><br>
@@ -224,8 +226,8 @@ class MailService
             </p>
         <p>
         <ul>
-            <li><b>Nome:</b> '.$name.'</li>
-            <li><b>Empresa:</b> '.$corporate_name.'</li>
+            <li><b>Nome:</b> '.utf8_decode($name).'</li>
+            <li><b>Empresa:</b> '.utf8_decode($corporate_name).'</li>
             <li><b>E-mail:</b>  '.$mail.'</li>
         </ul>
         </p>';
@@ -237,7 +239,7 @@ class MailService
     public function createMailPartnerAddFinish($name, $email, $linkStore)
     {
         $body = '
-            <p>Ol&aacute;, '.$name.'</p>
+            <p>Ol&aacute;, '.utf8_decode($name).'</p>
             <p>
                 Concluimos seu cadastro como <b>Parceiro Easytoque!</b>
             </p>

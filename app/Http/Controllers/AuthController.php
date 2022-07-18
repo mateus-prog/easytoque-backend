@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\HttpStatus;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Exceptions\UserWrongCredentials;
 use App\Traits\ApiResponser;
 use App\Http\Controllers\Controller;
@@ -9,11 +12,21 @@ use App\Http\Requests\Authentication\SignInRequest;
 use App\Http\Requests\Authentication\SignUpRequest;
 use App\Services\Authentication\SignInUserService;
 use App\Services\Authentication\SignUpUserService;
+use App\Services\User\UserService;
 use Exception;
 
 class AuthController extends Controller
 {
     use ApiResponser;
+
+    protected $userService;
+    
+    public function __construct(
+        UserService $userService
+    )
+    {
+        $this->userService = $userService;
+    }
 
     /**
      * @OA\Post(
@@ -98,7 +111,8 @@ class AuthController extends Controller
     public function login(SignInRequest $request)
     {
         try {
-            (new SignInUserService())->execute($request->only(['email', 'password']));
+            $request['status_user_id'] = 1;
+            (new SignInUserService())->execute($request->only(['email', 'password', 'status_user_id']));
 
             return $this->success([
                 'user' => auth()->user()->format(),
@@ -134,5 +148,17 @@ class AuthController extends Controller
         return [
             'message' => __('generic.tokensRevoked')
         ];
+    }
+
+    public function change(Request $request)
+    {
+        try {
+            $input = $request->all();
+            $this->userService->update(Auth::user()->id, $input);
+    
+            return $this->success('sucesso', HttpStatus::SUCCESS);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 500);
+        }
     }
 }

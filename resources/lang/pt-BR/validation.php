@@ -157,6 +157,13 @@ return [
         'first_name' => 'nome',
         'last_name' => 'sobrenome',
         'password' => 'senha',
+        'address' => 'endereço',
+        'city' => 'cidade',
+        'commission' => 'comissão',
+        'corporate_name' => 'razão social',
+        'district' => 'bairro',
+        'number' => 'número',
+        'state_id' => 'estado',
     ],
 
 ];

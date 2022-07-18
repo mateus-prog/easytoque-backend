@@ -9,12 +9,10 @@ use App\Services\User\UserService;
 use App\Services\User\UserCorporateService;
 use App\Services\User\UserStoreService;
 use App\Services\User\UserBankService;
-use App\Services\Store\StoreService;
 use App\Services\StatusUser\StatusUserService;
 use App\Services\Role\RoleService;
 use App\Services\Log\LogService;
 use App\Services\Mail\MailService;
-use App\Http\Requests\User\UserRequest;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 use Exception;
@@ -34,7 +32,6 @@ class UserController extends Controller
     protected $userCorporateService;
     protected $userStoreService;
     protected $userBankService;
-    protected $storeService;
     protected $statusUserService;
     protected $roleService;
     protected $logService;
@@ -45,7 +42,6 @@ class UserController extends Controller
         UserCorporateService $userCorporateService, 
         UserStoreService $userStoreService,
         UserBankService $userBankService,
-        StoreService $storeService,
         StatusUserService $statusUserService,
         RoleService $roleService,
         LogService $logService,
@@ -57,7 +53,6 @@ class UserController extends Controller
         $this->userCorporateService = $userCorporateService;
         $this->userStoreService = $userStoreService;
         $this->userBankService = $userBankService;
-        $this->storeService = $storeService;
         $this->statusUserService = $statusUserService;
         $this->roleService = $roleService;
         $this->logService = $logService;
@@ -78,7 +73,7 @@ class UserController extends Controller
         return $this->success($users, HttpStatus::SUCCESS);
     }
 
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
         try {  
             if($request['role_id'] == 4)
@@ -88,13 +83,9 @@ class UserController extends Controller
 
                 $input = $request->only(["corporate_name", "cnpj", "address", "number", "complement", "district", "city", "cep", "state_id", "user_id"]);
                 $userCorporate = $this->userCorporateService->store($input, $user->id);
-                
-                //$response = $this->storeService->storeMagento($user->id);
-                //$storeId = $response['loja_id'];
-                $storeId = 1;
-                
-                $input = $request->only(["commission", "store_id", "user_id"]);
-                $userStore = $this->userStoreService->store($input, $storeId, $user->id);
+
+                $input = $request->only(["commission", "user_id"]);
+                $userStore = $this->userStoreService->store($input, $user->id);
 
                 $input = $request->only(["user_id"]);
                 $userBankData = $this->userBankService->store($user->id);
@@ -121,7 +112,7 @@ class UserController extends Controller
                 
                 //mail welcome
                 $mailBody = $this->mailService->createMailWelcomeBody($name);
-                $mailSubject = $name . ", bem vindo parceiro Easytoque";
+                $mailSubject = utf8_decode($name) . ", bem vindo parceiro Easytoque";
 
                 $messageLog = "Bem vindo ao Easytoque";
 
@@ -130,7 +121,7 @@ class UserController extends Controller
                 //mail complete Data Bank
                 $link = 'http://localhost:4200/partners/edit-bank-data/'.$user->hash_id;
                 $mailBody = $this->mailService->createMailDataBankUserBody($name, $link);
-                $mailSubject = $name . ", complete seu cadastro como parceiro Easytoque";
+                $mailSubject = utf8_decode($name) . ", complete seu cadastro como parceiro Easytoque";
 
                 $messageLog = "Complete seu cadastro como parceiro Easytoque";                
 
@@ -154,7 +145,7 @@ class UserController extends Controller
         }
     }
 
-    public function update($id, UserRequest $request)
+    public function update($id, Request $request)
     {
         try {
             //Gate::authorize('update', User::findOrFail($id));
@@ -184,12 +175,45 @@ class UserController extends Controller
         }
     }
 
-    public function blockOrUnblock($id)
+    public function activeUser($id, Request $request)
     {
         try {
             //Gate::authorize('update', User::findOrFail($id));
+            $input = $request->only(["status_user_id"]);
+            
+            $this->userService->updateUserActive($id, $input);
 
-            $this->userService->updateBlock($id);
+            $messageLog = '';
+            $actionId = 5;
+            $idUserLog = $id;
+
+            $log = Log::createLog($idUserLog, $messageLog, $actionId);
+            $this->logService->store($log);
+
+            return response()->noContent();
+        } catch (AuthorizationException $aE) {
+            return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
+        } catch (ModelNotFoundException $m) {
+            return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function blockedUser($id, Request $request)
+    {
+        try {
+            //Gate::authorize('update', User::findOrFail($id));
+            $input = $request->only(["status_user_id"]);
+            
+            $this->userService->updateUserBlocked($id, $input);
+
+            $messageLog = $request['reason'];
+            $actionId = 4;
+            $idUserLog = $id;
+
+            $log = Log::createLog($idUserLog, $messageLog, $actionId);
+            $this->logService->store($log);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {

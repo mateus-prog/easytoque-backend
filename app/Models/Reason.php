@@ -19,7 +19,7 @@ class Reason extends BaseModel
         'id', 'reason', 'request_id'
     ];
 
-    public $timestamps = true;
+    public $timestamps = false;
 
     public function format()
     {

@@ -10,6 +10,9 @@ use App\Repositories\Elouquent\UserBankRepository;
 use App\Repositories\Elouquent\BankRepository;
 use App\Repositories\Elouquent\ReasonRepository;
 use App\Helpers\Format;
+
+use Illuminate\Support\Facades\Auth;
+
 use Exception;
 
 class RequestService
@@ -32,7 +35,23 @@ class RequestService
     public function all()
     {
         $requests = $this->requestRepository->all();
+        return $this->traitReturnDisplay($requests);
+    }
 
+    /**
+     * Selecione todos os usuarios
+     * @return array
+    */
+    public function getByUser()
+    {
+        $user = Auth::user();
+        $requests = $this->requestRepository->findByFieldWhereReturnObject('user_id', '=', $user->id, 'id, value, user_id, status_request_id, created_at');
+    
+        return $this->traitReturnDisplay($requests);
+    }
+
+    public function traitReturnDisplay($requests)
+    {
         foreach($requests as $request){
             $user = $this->userRepository->findById($request->user_id);
 
@@ -54,6 +73,7 @@ class RequestService
             $request->hash_id = $user->hash_id;
 
             $request->user_id = $user->first_name . ' ' . $user->last_name;
+            
         }
 
         return $requests;
@@ -91,13 +111,36 @@ class RequestService
 
         $request->user_id = $user->first_name . ' ' . $user->last_name;
 
-        /*$reason = $this->reasonRepository->findByFieldWhereReturnObject('request_id', '=', $id);
-        if(empty($reason)){
-            $request->reason = '';
-        }else{
-            $request->reason = $reason[0]->reason;
-        }*/
+        $reason = $this->reasonRepository->findByFieldWhereReturnObject('request_id', '=', $id);
+        $request->reason = empty($reason[0]) ? '' : $reason[0]->reason;
 
         return $request;
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        return $this->requestRepository->findById($id);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, $request)
+    {
+        try {
+            return $this->requestRepository->update($id, $request);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 }

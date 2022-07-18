@@ -29,8 +29,8 @@ class Request extends BaseModel
             "value" => 'R$ '.Format::valueBR($this->value),
             "user_id" => $this->user_id,
             "status_request_id" => $this->status_request_id,
-            "created_at" => Format::formatDateTime($this->created_at),
-            "updated_at" => Format::formatDateTime($this->updated_at)
+            "created_at" => Format::formatDate($this->created_at),
+            "updated_at" => Format::formatDate($this->updated_at)
         ];
     }
 

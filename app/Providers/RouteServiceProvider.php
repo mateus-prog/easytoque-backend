@@ -55,6 +55,7 @@ class RouteServiceProvider extends ServiceProvider
             $this->loadApiRoute("mailer");
             $this->loadApiRoute("state");
             $this->loadApiRoute("log");
+            $this->loadApiRoute("status");
             $this->loadApiRoute("clicksign");
             $this->loadApiRoute("status-request");
             $this->loadApiRoute("request");

@@ -32,7 +32,7 @@ class UserCorporateService
     public function getUserCorporateByUser($userId)
     {
         $userCorporate = $this->userCorporateRepository->findByFieldWhereReturnObject('user_id', '=', $userId);
-
+        
         $state = $this->stateService->findById($userCorporate[0]->state_id);
         $userCorporate[0]->state_id = $state->name;
 
