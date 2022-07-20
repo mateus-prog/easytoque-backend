@@ -1,10 +1,59 @@
-FROM php:8.1-fpm-alpine
-RUN apk add --no-cache nginx wget
-RUN mkdir -p /run/nginx
-COPY /docker/nginx.conf /etc/nginx/nginx.conf
-RUN mkdir -p /app
-COPY . /app
-RUN sh -c "wget http://getcomposer.org/composer.phar && chmod a+x composer.phar && mv composer.phar /usr/local/bin/composer"
-RUN cd /app && /usr/local/bin/composer install --no-dev
-RUN chown -R www-data: /app
-CMD sh /app/docker/startup.sh
+FROM php:8.0-fpm AS builder
+
+# Arguments defined in docker-compose.yml
+ARG user
+ARG uid
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+# Install Node
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN apt-get install -y nodejs
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mysqli mbstring exif pcntl bcmath gd
+
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && docker-php-ext-enable mysqli \
+    && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host = ho
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug \
+    && docker-php-ext-enable mysqli \
+    && echo "xdebug.mode=coverage" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+
+# Set working directory
+WORKDIR /var/www
+
+USER $user
+
+FROM php:8.0-fpm-alpine
+WORKDIR /var/www
+RUN rm -rf /var/www/html
+COPY --from=builder /var/www/easytoque-backend .
+RUN chown -R www-data:www-data /var/www
+RUN composer install
+RUN php artisan migrate
+RUN php artisan db:seed
+RUN ln -s public html
+EXPOSE 80
+CMD ["php-fpm"]
