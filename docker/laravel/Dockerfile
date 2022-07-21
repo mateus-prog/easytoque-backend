@@ -52,8 +52,8 @@ RUN rm -rf /var/www/html
 COPY --from=builder /var/www/easytoque-backend .
 RUN chown -R www-data:www-data /var/www
 RUN composer install
-RUN php artisan migrate
-RUN php artisan db:seed
+RUN cp local.env .env
+RUN php artisan migrate:fresh --seed
 RUN ln -s public html
 EXPOSE 8080
 CMD ["php-fpm"]
