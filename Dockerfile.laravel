@@ -1,4 +1,4 @@
-FROM php:8.0-cli AS builder
+FROM php:7.4-cli AS builder
 
 WORKDIR /var/www
 
@@ -11,24 +11,15 @@ RUN apt-get update && \
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php -r "if (hash_file('sha384', 'composer-setup.php') === '55ce33d7678c5a611085589f1f3ddf8b3c52d662cd01d4ba75c0ee0459970c2200a51f492d557530c71c15d8dba01eae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
     php composer-setup.php && \
-    mv composer.phar /usr/local/bin/composer
+    cp composer.phar /usr/local/bin/composer
 
-COPY . .
-RUN composer --version
-RUN rm composer.lock
-RUN composer install
+RUN php composer.phar create-project --prefer-dist laravel/laravel laravel
 
-FROM php:8.0-fpm-alpine
-COPY ./docker/laravel/php.ini /usr/local/etc/php/conf.d
-RUN mkdir /var/www/laravel
-WORKDIR /var/www/laravel
+FROM php:7.4-fpm-alpine
+WORKDIR /var/www
 RUN rm -rf /var/www/html
-COPY --from=builder /var/www .
-
-RUN cp local.env .env
-
+COPY --from=builder /var/www/laravel .
 RUN chown -R www-data:www-data /var/www
 RUN ln -s public html
-RUN php artisan migrate:fresh --seed
 EXPOSE 9000
 CMD ["php-fpm"]
