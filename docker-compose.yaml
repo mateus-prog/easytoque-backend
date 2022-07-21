@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
     image: mguizelini/easytoque-backend:prod
     container_name: laravel
+    tty: true
     networks:
       - easytoque-network
 
@@ -16,6 +17,7 @@ services:
       dockerfile: Dockerfile
     image: mguizelini/nginx:prod
     container_name: nginx
+    tty: true
     networks:
       - easytoque-network
     ports:
