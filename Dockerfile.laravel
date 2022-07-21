@@ -29,6 +29,8 @@ RUN pecl install xdebug \
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN mkdir /var/www
+
 # Set working directory
 WORKDIR /var/www
 
@@ -36,6 +38,6 @@ COPY . .
 
 RUN cp local.env .env
 
-RUN rm -rf .git
-RUN chown -R www-data:www-data /var/www
-COPY .git .
+#RUN rm -rf .git
+#RUN chown -R www-data:www-data /var/www
+#COPY .git .
