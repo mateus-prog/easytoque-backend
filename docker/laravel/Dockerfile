@@ -19,9 +19,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN useradd -G www-data,root -u $uid -d /home/$user $user
 RUN mkdir -p /home/$user/.composer && \
     chown -R $user:$user /home/$user
-    
 
 COPY . .
+
+USER $user
+
 RUN /usr/bin/composer install
 
 FROM php:8.0-fpm-alpine
