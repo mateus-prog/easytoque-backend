@@ -33,6 +33,7 @@ COPY . .
 RUN cp local.env .env
 
 FROM php:8.0-fpm-alpine
+
 WORKDIR /var/www
 RUN rm -rf /var/www/html
 
@@ -41,9 +42,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 COPY --from=builder /var/www/laravel .
 
+RUN cp ./docker/dev-entrypoint.sh /usr/local/bin/dev-entrypoint
+RUN chmod 777 /usr/local/bin/dev-entrypoint
+
 RUN chown -R www-data:www-data /var/www
 RUN rm package-lock.json
-RUN composer install
+#RUN composer install
 
 RUN ln -s public html
 EXPOSE 9000
