@@ -29,7 +29,7 @@ RUN pecl install xdebug \
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN mkdir /var/www
+#RUN mkdir /var/www
 
 # Set working directory
 WORKDIR /var/www
