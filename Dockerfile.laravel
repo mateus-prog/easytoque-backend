@@ -42,7 +42,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 COPY --from=builder /var/www/laravel .
 
 RUN chown -R www-data:www-data /var/www
-RUN rm pachage-lock.json
+RUN rm package-lock.json
 RUN composer install
 
 RUN ln -s public html
