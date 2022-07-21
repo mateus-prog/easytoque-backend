@@ -2,7 +2,7 @@ FROM php:7.4-cli AS builder
 
 WORKDIR /var/www
 
-COPY local.env .
+#COPY local.env .
 
 RUN apt-get update && \
     apt-get install libzip-dev -y && \
@@ -21,8 +21,8 @@ FROM php:7.4-fpm-alpine
 WORKDIR /var/www
 RUN rm -rf /var/www/html
 COPY --from=builder /var/www/laravel .
-RUN rm .env
-RUN cp local.env .env
+#RUN rm .env
+#RUN cp local.env .env
 RUN chown -R www-data:www-data /var/www
 RUN ln -s public html
 EXPOSE 9000
