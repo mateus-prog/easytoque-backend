@@ -19,10 +19,11 @@ RUN rm composer.lock
 RUN composer install
 
 FROM php:8.0-fpm-alpine
-WORKDIR /var/www
-RUN rm -rf /var/www/html
 RUN mkdir /var/www/laravel
-COPY --from=builder /var/www/laravel .
+WORKDIR /var/www/laravel
+RUN rm -rf /var/www/html
+COPY --from=builder /var/www .
+
 RUN chown -R www-data:www-data /var/www
 RUN ln -s public html
 RUN php artisan migrate:fresh --seed
