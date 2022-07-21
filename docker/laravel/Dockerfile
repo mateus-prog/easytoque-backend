@@ -1,5 +1,9 @@
 FROM php:8.0-cli AS builder
 
+# Arguments defined in docker-compose.yml
+ARG user
+ARG uid
+
 WORKDIR /var/www
 
 RUN apt-get update && \
@@ -8,10 +12,14 @@ RUN apt-get update && \
     apt-get install zip unzip -y && \
     docker-php-ext-install zip
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');" 
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Create system user to run Composer and Artisan Commands
+RUN useradd -G www-data,root -u $uid -d /home/$user $user
+RUN mkdir -p /home/$user/.composer && \
+    chown -R $user:$user /home/$user
+    
 
 COPY . .
 RUN composer install
