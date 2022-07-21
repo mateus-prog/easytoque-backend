@@ -55,5 +55,5 @@ RUN composer install
 RUN php artisan migrate
 RUN php artisan db:seed
 RUN ln -s public html
-EXPOSE 80
+EXPOSE 8080
 CMD ["php-fpm"]
