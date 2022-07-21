@@ -6,7 +6,6 @@ services:
       context: ./
       dockerfile: Dockerfile.laravel
     image: mguizelini/laravel:prod
-    #entrypoint: 'dev-entrypoint'
     container_name: laravel
     restart: unless-stopped
     working_dir: /var/www/
