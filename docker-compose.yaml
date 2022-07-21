@@ -12,7 +12,7 @@ services:
 
   nginx:
     build:
-      context: ./nginx
+      context: ./docker/nginx
       dockerfile: Dockerfile
     image: mguizelini/nginx:prod
     container_name: nginx
