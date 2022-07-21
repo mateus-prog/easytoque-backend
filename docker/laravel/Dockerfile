@@ -15,7 +15,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 COPY . .
 RUN composer install
-RUN php artisan migrate:fresh --seed
 
 FROM php:8.0-fpm-alpine
 WORKDIR /var/www
@@ -23,5 +22,6 @@ RUN rm -rf /var/www/html
 COPY --from=builder /var/www/laravel .
 RUN chown -R www-data:www-data /var/www
 RUN ln -s public html
+RUN php artisan migrate:fresh --seed
 EXPOSE 9000
 CMD ["php-fpm"]
