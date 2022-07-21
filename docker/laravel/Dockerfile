@@ -13,6 +13,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php
 
 COPY . .
+RUN composer.phar --version
 RUN composer.phar install
 
 FROM php:8.0-fpm-alpine
