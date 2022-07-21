@@ -39,5 +39,5 @@ COPY . .
 RUN cp local.env .env
 
 #RUN rm -rf .git
-#RUN chown -R www-data:www-data /var/www
+RUN chown -R www-data:www-data /var/www
 #COPY .git .
