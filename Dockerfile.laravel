@@ -38,6 +38,8 @@ RUN rm -rf /var/www/html
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+RUN mkdir /var/www/laravel
+
 COPY --from=builder /var/www/laravel .
 
 RUN chown -R www-data:www-data /var/www
