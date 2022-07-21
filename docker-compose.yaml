@@ -3,8 +3,8 @@ version: '3'
 services:
   laravel:
     build:
-      context: ./docker/laravel
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile.laravel
     image: mguizelini/easytoque-backend:prod
     container_name: laravel
     tty: true
@@ -13,8 +13,8 @@ services:
 
   nginx:
     build:
-      context: ./docker/nginx
-      dockerfile: Dockerfile
+      context: ./
+      dockerfile: Dockerfile.nginx
     image: mguizelini/nginx:prod
     container_name: nginx
     tty: true
