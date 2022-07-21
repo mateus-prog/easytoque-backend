@@ -3,9 +3,6 @@ version: '3'
 services:
   laravel:
     build:
-      args:
-        user: mateusguizelini01
-        uid: 1000
       context: ./docker/laravel
       dockerfile: Dockerfile
     image: mguizelini/easytoque-backend:prod
