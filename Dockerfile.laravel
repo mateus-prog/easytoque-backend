@@ -24,6 +24,8 @@ WORKDIR /var/www/laravel
 RUN rm -rf /var/www/html
 COPY --from=builder /var/www .
 
+RUN cp local.env .env
+
 RUN chown -R www-data:www-data /var/www
 RUN ln -s public html
 RUN php artisan migrate:fresh --seed
