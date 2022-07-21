@@ -2,6 +2,9 @@ FROM php:7.4-cli AS builder
 
 WORKDIR /var/www
 
+COPY local.env .
+RUN cp local.env .env
+
 RUN apt-get update && \
     apt-get install libzip-dev -y && \
     apt-get update && \
