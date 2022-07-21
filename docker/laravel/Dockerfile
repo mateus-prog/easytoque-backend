@@ -22,7 +22,7 @@ RUN mkdir -p /home/$user/.composer && \
     
 
 COPY . .
-RUN composer install
+RUN /usr/bin/composer install
 
 FROM php:8.0-fpm-alpine
 WORKDIR /var/www
