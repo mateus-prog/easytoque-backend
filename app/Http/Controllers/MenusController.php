@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\HttpStatus;
 use Illuminate\Http\Request;
-use App\Services\menu\MenuService;
+use App\Services\Menu\MenuService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 use Exception;
