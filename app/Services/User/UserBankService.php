@@ -2,18 +2,18 @@
 
 namespace App\Services\User;
 
-use App\Repositories\Elouquent\userRepository;
-use App\Repositories\Elouquent\userBankRepository;
-use App\Repositories\Elouquent\bankRepository;
+use App\Repositories\Elouquent\UserRepository;
+use App\Repositories\Elouquent\UserBankRepository;
+use App\Repositories\Elouquent\BankRepository;
 use Exception;
 
 class UserBankService
 {
     public function __construct()
     {
-        $this->userRepository = new userRepository();
-        $this->userBankRepository = new userBankRepository();
-        $this->bankRepository = new bankRepository();
+        $this->userRepository = new UserRepository();
+        $this->userBankRepository = new UserBankRepository();
+        $this->bankRepository = new BankRepository();
     }
 
     public function store(int $userId)

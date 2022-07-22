@@ -2,7 +2,7 @@
 
 namespace App\Services\User;
 
-use App\Repositories\Elouquent\userCorporateRepository;
+use App\Repositories\Elouquent\UserCorporateRepository;
 use App\Services\State\StateService;
 use Exception;
 
@@ -10,7 +10,7 @@ class UserCorporateService
 {
     public function __construct()
     {
-        $this->userCorporateRepository = new userCorporateRepository();
+        $this->userCorporateRepository = new UserCorporateRepository();
         $this->stateService = new StateService();
     }
 

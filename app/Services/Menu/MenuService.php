@@ -16,11 +16,9 @@ class MenuService
 
     public function getMenuByRole($roleId)
     {
-
         $menusArrayId = $this->menuRoleRepository->findByFieldWhereReturnArray('role_id', '=', $roleId, 'menu_id');
         $menus = $this->menuRepository->findByFieldWhereIn('id', $menusArrayId);
 
         return $menus;
-
     }
 }
