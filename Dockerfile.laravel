@@ -42,7 +42,7 @@ RUN composer install
 
 RUN rm -rf /var/www/html
 # ln -s [target file] [Symbolic filename]
-RUN ln -s public html
-EXPOSE 8000
+#RUN ln -s public html
+EXPOSE 9000
 CMD ["php-fpm"]
 
