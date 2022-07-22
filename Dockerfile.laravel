@@ -29,7 +29,6 @@ RUN pecl install xdebug \
 
 # Clean
 COPY . .
-#RUN rm .env
 RUN cp local.env .env
 
 # Get latest composer
@@ -44,6 +43,6 @@ RUN composer install
 RUN rm -rf /var/www/html
 # ln -s [target file] [Symbolic filename]
 RUN ln -s public html
-EXPOSE 9000
+EXPOSE 8000
 CMD ["php-fpm"]
 
