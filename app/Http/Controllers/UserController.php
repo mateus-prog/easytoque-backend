@@ -119,7 +119,7 @@ class UserController extends Controller
                 $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
 
                 //mail complete Data Bank
-                $link = 'http://localhost:4200/partners/edit-bank-data/'.$user->hash_id;
+                $link = env('EXTERNAL_APP_URL').'/partners/edit-bank-data/'.$user->hash_id;
                 $mailBody = $this->mailService->createMailDataBankUserBody($name, $link);
                 $mailSubject = utf8_decode($name) . ", complete seu cadastro como parceiro Easytoque";
 
