@@ -39,6 +39,10 @@ RUN chown -R www-data:www-data /var/www
 RUN rm package-lock.json
 RUN rm -rf vendor
 RUN composer install
+RUN php artisan key:generate
+RUN php artisan migrate
+RUN php artisan optimize
+RUN php artisan route:list
 
 RUN rm -rf /var/www/html
 # ln -s [target file] [Symbolic filename]
