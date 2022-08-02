@@ -45,5 +45,7 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 */
 
 Route::get('/env', function () {
-    dd(env('APP_URL'));
+
+    dump(env('APP_NAME'));
+    dd(config('app.url'));
 });
