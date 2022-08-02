@@ -29,7 +29,7 @@ RUN pecl install xdebug \
 
 # Clean
 COPY . .
-RUN cp local.env .env
+#RUN cp local.env .env
 
 # Get latest composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -40,9 +40,10 @@ RUN rm package-lock.json
 RUN rm -rf vendor
 RUN composer install
 RUN php artisan key:generate
-RUN php artisan migrate
 RUN php artisan optimize
 RUN php artisan route:list
+RUN cp local.env .env
+RUN php artisan migrate
 
 RUN rm -rf /var/www/html
 # ln -s [target file] [Symbolic filename]
