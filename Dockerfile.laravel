@@ -39,8 +39,8 @@ RUN chown -R www-data:www-data /var/www
 RUN rm package-lock.json
 RUN rm -rf vendor
 RUN composer install
-RUN php artisan optimize
-RUN php artisan route:list
+#RUN php artisan optimize
+#RUN php artisan route:list
 RUN cp local.env .env
 RUN php artisan key:generate
 #RUN php artisan migrate -y
