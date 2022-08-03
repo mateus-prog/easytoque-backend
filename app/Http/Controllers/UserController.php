@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\HttpStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Services\User\UserService;
 use App\Services\User\UserCorporateService;
 use App\Services\User\UserStoreService;
 use App\Services\User\UserBankService;
+use App\Services\User\UserRoleService;
 use App\Services\StatusUser\StatusUserService;
 use App\Services\Role\RoleService;
 use App\Services\Log\LogService;
@@ -32,6 +32,7 @@ class UserController extends Controller
     protected $userCorporateService;
     protected $userStoreService;
     protected $userBankService;
+    protected $userRoleService;
     protected $statusUserService;
     protected $roleService;
     protected $logService;
@@ -42,6 +43,7 @@ class UserController extends Controller
         UserCorporateService $userCorporateService, 
         UserStoreService $userStoreService,
         UserBankService $userBankService,
+        UserRoleService $userRoleService,
         StatusUserService $statusUserService,
         RoleService $roleService,
         LogService $logService,
@@ -53,6 +55,7 @@ class UserController extends Controller
         $this->userCorporateService = $userCorporateService;
         $this->userStoreService = $userStoreService;
         $this->userBankService = $userBankService;
+        $this->userRoleService = $userRoleService;
         $this->statusUserService = $statusUserService;
         $this->roleService = $roleService;
         $this->logService = $logService;
@@ -128,6 +131,8 @@ class UserController extends Controller
                 $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
             }
 
+            $this->userRoleService->store(['role_id' => $request['role_id'], 'user_id' => $user->id]);
+
             return $this->success($user, HttpStatus::CREATED);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
@@ -157,11 +162,18 @@ class UserController extends Controller
             $messageLog = $role['display_name'];
             $actionId = 2;
             $idUserLog = $id;
+            $userId = $id;
 
             $log = Log::createLog($idUserLog, $messageLog, $actionId);
 
             $input = $request->only(["first_name", "last_name", "password", "role_id", "email"]);
-            $this->userService->update($id, $input);
+            $this->userService->update($userId, $input);
+
+            //verifica se no request vem o campo role_id e faz o update
+            if($request['role_id']){
+                $idUserRole = $this->userRoleService->getUser($userId)[0]['id'];
+                $this->userRoleService->update($idUserRole, ['role_id' => $request['role_id']]);
+            }
 
             $this->logService->store($log);
 

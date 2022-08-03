@@ -14,10 +14,10 @@ class UserCorporate extends BaseModel
 
     public $table = 'user_corporate';
 	public $fillable = [
-        'corporate_name', 'cnpj', 'address', 'number', 'complement', 'district', 'city', 'cep', 'state_id', 'user_id'
+        'corporate_name', 'cnpj', 'address', 'number', 'complement', 'district', 'city', 'cep', 'state_id', 'user_id', 'url_logo'
     ];
 	public $searchable = [
-        'corporate_name', 'cnpj', 'address', 'number', 'complement', 'district', 'city', 'cep', 'state_id', 'user_id'
+        'corporate_name', 'cnpj', 'address', 'number', 'complement', 'district', 'city', 'cep', 'state_id', 'user_id', 'url_logo'
     ];
 
     public $timestamps = true;
@@ -35,6 +35,7 @@ class UserCorporate extends BaseModel
             "city" => $this->city,
             "cep" => Format::cep($this->cep),
             "state_id" => $this->state_id,
+            "url_logo" => $this->url_logo,
         ];
     }
 }

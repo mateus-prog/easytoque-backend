@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\HttpStatus;
 use Illuminate\Http\Request;
 use App\Services\Request\RequestService;
+use App\Services\Upload\UploadService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
@@ -18,11 +19,16 @@ class RequestController extends Controller
     use Pagination;
 
     protected $requestService;
+    protected $uploadService;
     
-    public function __construct(RequestService $requestService)
+    public function __construct(
+        RequestService $requestService,
+        UploadService $uploadService
+    )
     {
         $this->middleware(["auth", "verified"]);
         $this->requestService = $requestService;
+        $this->uploadService = $uploadService;
     }
     
     public function index()
@@ -53,6 +59,32 @@ class RequestController extends Controller
 
             $input = $request->only(["status_request_id"]);
             $this->requestService->update($id, $input);
+
+            return response()->noContent();
+        } catch (AuthorizationException $aE) {
+            return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
+        } catch (ModelNotFoundException $m) {
+            return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function upload($id, Request $request)
+    {
+        
+        try {
+            $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoice');
+            if ($this->uploadService->verifyFile($pathNew)) {
+                $requestInf = $this->requestService->findById($id);
+                //pega o nome do arquivo
+                $pathOld = $requestInf->url_invoice;
+
+                //apaga o arquivo
+                $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
+            }
+
+            $this->requestService->update($id, ['url_invoice' => $pathNew]);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
