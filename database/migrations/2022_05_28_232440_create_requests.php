@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('value', 13, 2);
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('status_request_id');
+            $table->string('url_invoice', 255)->nullable();
             $table->timestamps();
 
             $table

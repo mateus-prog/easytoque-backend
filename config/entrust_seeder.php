@@ -13,7 +13,8 @@ return [
             'users' => 'r'
         ],
         'partner' => [
-            'users' => 'r'
+            'users' => 'r',
+            'logos' => 'c,r,u,d'
         ],
     ],
     'user_roles' => [

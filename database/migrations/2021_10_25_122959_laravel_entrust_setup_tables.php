@@ -33,6 +33,7 @@ class LaravelEntrustSetupTables extends Migration
         
         // Schema to create role_users table
         Schema::create('role_user', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('user_id');
 
@@ -42,7 +43,7 @@ class LaravelEntrustSetupTables extends Migration
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['user_id', 'role_id']);
+            //$table->primary(['user_id', 'role_id', 'id']);
         });
 
         // Schema to create permission_role table

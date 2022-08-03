@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('district', 40);
             $table->string('city', 40);
             $table->string('cep', 9);
+            $table->string('url_logo', 255)->nullable();
             $table->unsignedBigInteger('state_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
