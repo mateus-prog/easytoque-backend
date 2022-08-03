@@ -204,6 +204,9 @@ class MailService
 
     public function createMailDataBankUserBody($name, $link)
     {
+        $link = str_replace('[', '', $link);
+        $link = str_replace(']', '', $link);
+
         $body = '
         <p>Ol&aacute;, <b>'.utf8_decode($name).'</b>.</p><br>
         <p>
