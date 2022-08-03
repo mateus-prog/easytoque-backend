@@ -46,7 +46,7 @@ class UserCorporateService
     */
     public function getUserCorporateEditByUser($userId)
     {
-        return $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'corporate_name, cnpj');
+        return $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'corporate_name, cnpj, id');
     }
 
     /**
@@ -80,10 +80,8 @@ class UserCorporateService
      */
     public function update($id, $request)
     {
-        $user = $this->findById($id);
-
         try {
-            return $this->userCorporateRepository->update($user, $request);
+            return $this->userCorporateRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }

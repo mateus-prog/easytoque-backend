@@ -23,7 +23,8 @@ class ClickSignService
     public function __construct()
     {
         $this->_token = 'ba466851-5de6-4fa0-9d5a-6871f57167d9';
-        $this->_environment = 'https://app.clicksign.com'; 
+        //$this->_environment = 'https://app.clicksign.com'; 
+        $this->_environment = 'https://sandbox.clicksign.com';
         $this->_keyTemplateDocument = '7d037718-f24c-4202-bfa0-e5adc58ae553';
 
         $this->userRepository = new UserRepository();
