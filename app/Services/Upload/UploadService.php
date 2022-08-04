@@ -88,10 +88,9 @@ class UploadService
     }
 
     public function pathFile($file){
-        //$host = env('APP_URL');
-        $host = 'http://127.0.0.1:8000';
-        //$host = config('app.url');
-        $path = $file != '' ? $host .'/storage/'. $file : '';
+        $host = env('APP_URL');
+        //$host = 'http://127.0.0.1:8000';
+        $path = $file != '' ? $host .'/'. $file : '';
         return $path;
     }
 
