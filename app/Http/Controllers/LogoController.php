@@ -39,7 +39,7 @@ class LogoController extends Controller
         try {
             $urlLogo = $this->logoService->getPathLogo();
             $path = $this->uploadService->pathFile($urlLogo);
-
+            
             return $this->success(['path' => $path], HttpStatus::SUCCESS);
 
         } catch (Exception $e) {
@@ -65,7 +65,7 @@ class LogoController extends Controller
 
             $this->userCorporateService->update($id, ['url_logo' => $pathNew]);
 
-            $path = $this->uploadService->pathFile($pathNew);
+            $path = $this->uploadService->pathFile('storage/'.$pathNew);
 
             return $this->success(['path' => $path], HttpStatus::SUCCESS);
         } catch (AuthorizationException $aE) {
@@ -83,7 +83,9 @@ class LogoController extends Controller
             $id = $this->logoService->getUserCorporateId();
             //pega o nome do arquivo que esta no banco
             $file = $this->logoService->getPathLogo();
-            
+
+            $file = str_replace('storage/', '', $file);
+
             //apaga o arquivo
             $isDeleted = $this->uploadService->destroyFile($file);
             
