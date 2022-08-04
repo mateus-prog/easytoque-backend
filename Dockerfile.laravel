@@ -29,22 +29,38 @@ RUN pecl install xdebug \
 
 # Clean
 COPY . .
-#RUN cp local.env .env
 
 # Get latest composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Change permissions
 RUN chown -R www-data:www-data /var/www
+
+# Remove archive file
 RUN rm package-lock.json
+
+# Remove composer installation folder  
 RUN rm -rf vendor
+
+# Install composer dependencies
 RUN composer install
 #RUN php artisan optimize
 #RUN php artisan route:list
+
+# Copy local.env to .env
 RUN cp local.env .env
+
+
 RUN php artisan key:generate
+
+# Create storage link
+RUN php artisan storage:link
+
+# Run schedule tasks
+RUN php artisan schedule:work
 #RUN php artisan migrate -y
 
+# Remove folder html
 RUN rm -rf /var/www/html
 # ln -s [target file] [Symbolic filename]
 #RUN ln -s public html
