@@ -57,7 +57,7 @@ RUN php artisan key:generate
 RUN php artisan storage:link
 
 # Run schedule tasks
-RUN php artisan schedule:work
+#RUN php artisan schedule:work
 #RUN php artisan migrate -y
 
 # Remove folder html
