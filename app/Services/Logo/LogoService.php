@@ -18,7 +18,7 @@ class LogoService
     {
         $this->_inputUpload = 'url_logo';
         $this->_pathUpload = 'logos'; 
-        $this->_logoDefault = $this->_pathUpload.'/logo_default.png';
+        $this->_logoDefault = 'logo/logo_default.png';
 
         $this->userRepository = new UserRepository();
         $this->userCorporateRepository = new UserCorporateRepository();
@@ -37,6 +37,6 @@ class LogoService
         $id = $this->getUserCorporateId();
         $userCorporate = $this->userCorporateRepository->findById($id);
 
-        return $userCorporate->url_logo == '' ? $this->_logoDefault : $userCorporate->url_logo;
+        return $userCorporate->url_logo == '' ? $this->_logoDefault : 'storage/'.$userCorporate->url_logo;
     }
 }
