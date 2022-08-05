@@ -41,6 +41,9 @@ class RequestController extends Controller
     public function getByUser()
     {
         $requests = $this->requestService->getByUser();
+        foreach ($requests as $request) {
+            $request->url_invoice = $request->url_invoice != '' ? $this->uploadService->pathFile('storage/'.$request->url_invoice) : '';
+        }
 
         return $this->success($requests, HttpStatus::SUCCESS);
     }
@@ -70,21 +73,21 @@ class RequestController extends Controller
         }
     }
 
-    public function upload($id, Request $request)
+    public function upload(Request $request)
     {
-        
         try {
-            $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoice');
+            $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoices');
+            
             if ($this->uploadService->verifyFile($pathNew)) {
-                $requestInf = $this->requestService->findById($id);
+                $requestInf = $this->requestService->findById($request->id);
                 //pega o nome do arquivo
                 $pathOld = $requestInf->url_invoice;
 
                 //apaga o arquivo
                 $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
             }
-
-            $this->requestService->update($id, ['url_invoice' => $pathNew]);
+            
+            $this->requestService->update($request->id, ['url_invoice' => $pathNew, 'status_request_id' => '4']);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {

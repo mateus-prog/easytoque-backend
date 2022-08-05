@@ -63,6 +63,7 @@ class LogoController extends Controller
                 $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
             }
 
+            //update no banco url_logo
             $this->userCorporateService->update($id, ['url_logo' => $pathNew]);
 
             $path = $this->uploadService->pathFile('storage/'.$pathNew);

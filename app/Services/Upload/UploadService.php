@@ -34,7 +34,6 @@ class UploadService
         try {
             //inicia com path vazio
             $path = '';
-
             //se fizer upload do arquivo
             if($request->hasFile($inputUpload) && $request->url_logo->isValid()){
                 $path = $request->url_logo->store($pathUpload); 
@@ -59,7 +58,6 @@ class UploadService
         try {
             //inicia com path vazio
             $path = '';
-
             //se fizer upload do arquivo
             if($request->hasFile($inputUpload) && $request->url_invoice->isValid()){
                 $path = $request->url_invoice->store($pathUpload); 
