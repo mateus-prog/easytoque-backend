@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\UserCorporateController;
+use App\Http\Controllers\SoapController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,3 +51,5 @@ Route::get('/env', function () {
     dump(config('app.url'));
     //dd(config('app.url'));
 });
+
+Route::get('/teste', [SoapController::class, 'index']);
