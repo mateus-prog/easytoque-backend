@@ -13,10 +13,10 @@ class UserStore extends BaseModel
 
     public $table = 'user_store';
 	public $fillable = [
-        'image_url', 'commission', 'store_id', 'user_id'
+        'url_logo', 'commission', 'store_id', 'user_id'
     ];
 	public $searchable = [
-        'image_url', 'commission', 'store_id', 'user_id'
+        'url_logo', 'commission', 'store_id', 'user_id'
     ];
 
     public $timestamps = true;
