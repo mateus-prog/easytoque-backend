@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('user_store', function (Blueprint $table) {
             $table->id();
-            $table->string('url_logo', 100)->nullable();
             $table->decimal('commission', 5, 2);
             $table->unsignedBigInteger('store_id')->nullable();
             $table->unsignedBigInteger('user_id');
