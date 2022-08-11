@@ -37,12 +37,12 @@ Route::group(["middleware" => "auth:sanctum"], function () {
             "permission:update-users"
         );
 
-        Route::get("/users/bank/{userId}", [UserBankController::class, 'getUserBankByUser'])->middleware(
-            "permission:read-users"
-        );
-
         Route::put("/users/active/{userId}", [UserController::class, 'activeUser'])->middleware("permission:delete-users");
         Route::put("/users/blocked/{userId}", [UserController::class, 'blockedUser'])->middleware("permission:delete-users");
     });
     Route::put("/users/{userId}", [UserController::class, 'update']);
+    
+    Route::get("/users/bank/{userId}", [UserBankController::class, 'getUserBankByUser'])->middleware(
+        "permission:read-users"
+    );
 });
