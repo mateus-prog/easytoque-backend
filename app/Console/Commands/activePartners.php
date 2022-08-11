@@ -66,7 +66,7 @@ class activePartners extends Command
                 if($user->status_user_id == 1)
                 {   
                     //incluir a loja no banco de dados
-                    //$response = $this->storeService->storeMagento($user->id);
+                    //$response = $this->storeService->createStoreMagento($user->id);
                     //$storeId = $response['loja_id'];
                     $storeId = 1;
                     
