@@ -6,7 +6,6 @@ use App\Http\HttpStatus;
 use App\Services\Log\LogService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
-use Illuminate\Http\Request;
 
 class LogController extends Controller
 {

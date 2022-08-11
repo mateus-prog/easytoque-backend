@@ -6,6 +6,7 @@ use App\Http\HttpStatus;
 use Illuminate\Http\Request;
 use App\Services\Request\RequestService;
 use App\Services\Upload\UploadService;
+use App\Services\Store\StoreService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
@@ -20,15 +21,18 @@ class RequestController extends Controller
 
     protected $requestService;
     protected $uploadService;
+    protected $storeService;
     
     public function __construct(
         RequestService $requestService,
-        UploadService $uploadService
+        UploadService $uploadService,
+        StoreService $storeService
     )
     {
         $this->middleware(["auth", "verified"]);
         $this->requestService = $requestService;
         $this->uploadService = $uploadService;
+        $this->storeService = $storeService;
     }
     
     public function index()
@@ -42,7 +46,7 @@ class RequestController extends Controller
     {
         $requests = $this->requestService->getByUser();
         foreach ($requests as $request) {
-            $request->url_invoice = $request->url_invoice != '' ? $this->uploadService->pathFile('storage/'.$request->url_invoice) : '';
+            $request->url_proof = $request->url_proof != '' ? $this->uploadService->pathFile('storage/'.$request->url_proof) : '';
         }
 
         return $this->success($requests, HttpStatus::SUCCESS);
@@ -73,21 +77,21 @@ class RequestController extends Controller
         }
     }
 
-    public function upload(Request $request)
+    public function uploadFileProof(Request $request)
     {
         try {
-            $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoices');
+            $pathNew = $this->uploadService->uploadFileProof($request, 'url_proof', 'proof');
             
             if ($this->uploadService->verifyFile($pathNew)) {
                 $requestInf = $this->requestService->findById($request->id);
                 //pega o nome do arquivo
-                $pathOld = $requestInf->url_invoice;
+                $pathOld = $requestInf->url_proof;
 
                 //apaga o arquivo
                 $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
             }
             
-            $this->requestService->update($request->id, ['url_invoice' => $pathNew, 'status_request_id' => '4']);
+            $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
@@ -97,5 +101,37 @@ class RequestController extends Controller
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
+    }
+
+    public function uploadFileInvoice(Request $request)
+    {
+        try {
+            $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoice');
+            
+            if ($this->uploadService->verifyFile($pathNew)) {
+                $requestInf = $this->requestService->findById($request->id);
+                //pega o nome do arquivo
+                $pathOld = $requestInf->url_proof;
+
+                //apaga o arquivo
+                $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
+            }
+            
+            $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
+
+            return response()->noContent();
+        } catch (AuthorizationException $aE) {
+            return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
+        } catch (ModelNotFoundException $m) {
+            return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function requestStore(string $type){
+        $requestsStore = $this->storeService->storeMagento($type);
+
+        return $this->success($requestsStore, HttpStatus::SUCCESS);
     }
 }

@@ -53,6 +53,30 @@ class UploadService
      * @param  string  $pathUpload
      * @return \Illuminate\Http\Response
      */
+    public function uploadFileProof($request, $inputUpload, $pathUpload)
+    {
+        try {
+            //inicia com path vazio
+            $path = '';
+            //se fizer upload do arquivo
+            if($request->hasFile($inputUpload) && $request->url_proof->isValid()){
+                $path = $request->url_proof->store($pathUpload); 
+            }
+
+            return $path;
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  int  $id
+     * @param  string  $inputUpload
+     * @param  string  $pathUpload
+     * @return \Illuminate\Http\Response
+     */
     public function uploadFileInvoice($request, $inputUpload, $pathUpload)
     {
         try {
