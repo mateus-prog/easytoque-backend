@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('cnpj', 18);
             $table->string('address', 40);
             $table->string('number', 10);
-            $table->string('complement', 10)->nullable();
+            $table->string('complement', 20)->nullable();
             $table->string('district', 40);
             $table->string('city', 40);
             $table->string('cep', 9);
