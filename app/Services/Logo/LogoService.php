@@ -17,7 +17,7 @@ class LogoService
     public function __construct()
     {
         $this->_inputUpload = 'url_logo';
-        $this->_pathUpload = 'logo'; 
+        $this->_pathUpload = 'logos'; 
         $this->_logoDefault = 'logo/logo_default.png';
 
         $this->userRepository = new UserRepository();
