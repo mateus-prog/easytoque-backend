@@ -128,6 +128,15 @@ class RequestService
         return $this->requestRepository->findById($id);
     }
 
+    public function store(array $request)
+    {
+        try { 
+            return $this->requestRepository->store($request);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *

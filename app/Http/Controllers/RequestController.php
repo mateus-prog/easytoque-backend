@@ -13,6 +13,7 @@ use App\Traits\Pagination;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 
 class RequestController extends Controller
 {
@@ -108,16 +109,17 @@ class RequestController extends Controller
         try {
             $pathNew = $this->uploadService->uploadFileInvoice($request, 'url_invoice', 'invoice');
             
-            if ($this->uploadService->verifyFile($pathNew)) {
-                $requestInf = $this->requestService->findById($request->id);
-                //pega o nome do arquivo
-                $pathOld = $requestInf->url_proof;
+            $userId = Auth::user()->id;
 
-                //apaga o arquivo
-                $pathOld != '' ? $this->uploadService->destroyFile($pathOld) : '';
-            }
-            
-            $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
+            $request->value = str_replace('.', '', $request->value);
+            $request->value = str_replace(',', '.', $request->value);
+
+            $this->requestService->store([
+                'user_id' => $userId,
+                'value' => $request->value,
+                'status_request_id' => '1',
+                'url_invoice' => $pathNew, 
+            ]);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
