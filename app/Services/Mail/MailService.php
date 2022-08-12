@@ -45,8 +45,8 @@ class MailService
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
             $mailTo = 'parceiros@toquecolor.com.br';
-            $clientId = '518263093860-sv6g3pmjkg544i1uc7am61n8ivvf04ch.apps.googleusercontent.com';
-		    $clientSecret = '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';
+            $clientId = '1023819975112-d3gd5qc5do527qb0b07tnc5kiu8j7o4v.apps.googleusercontent.com';
+		    $clientSecret = 'rUAE2HiEbE0fb1BHHkFfzzzC';
             $refreshToken = '1//0hFbTHtXkXSJECgYIARAAGBESNwF-L9IrHBpjyvNg2YNq1Y2-Yqfx4lrxvCAb61YvZyyvHc94JXq3RmOOE7CmNJalFBaNYZodxZk';
 
             $provider = new Google(
