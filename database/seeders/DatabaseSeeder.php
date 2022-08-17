@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             StatusRequestTableSeeder::class,
             ActionsTableSeeder::class,
             LaravelEntrustSeeder::class,
+            RolesTableSeeder::class,
         ]);
     }
 }
