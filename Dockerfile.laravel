@@ -48,7 +48,7 @@ RUN cp local.env .env
 RUN php artisan key:generate
 
 # Create storage link
-RUN php artisan storage:link
+#RUN php artisan storage:link
 
 # Run schedule tasks
 #RUN php artisan schedule:work

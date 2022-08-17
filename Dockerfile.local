@@ -43,7 +43,7 @@ RUN cp local.env .env
 RUN php artisan key:generate
 
 # Create storage link
-RUN php artisan storage:link
+#RUN php artisan storage:link
 
 USER $user
 EXPOSE 9000
