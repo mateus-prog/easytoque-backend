@@ -18,25 +18,25 @@ class RolesTableSeeder extends Seeder
     public function run()
     {
         DB::table('roles')
-            ->whereIn('id', 1)
+            ->where('id', 1)
             ->update([
                 "display_name" => 'Administrador'
         ]);
 
         DB::table('roles')
-            ->whereIn('id', 2)
+            ->where('id', 2)
             ->update([
                 "display_name" => 'Colaborador'
         ]);
 
         DB::table('roles')
-            ->whereIn('id', 3)
+            ->where('id', 3)
             ->update([
                 "display_name" => 'Financeiro'
         ]);
 
         DB::table('roles')
-            ->whereIn('id', 4)
+            ->where('id', 4)
             ->update([
                 "display_name" => 'Parceiro'
         ]);
