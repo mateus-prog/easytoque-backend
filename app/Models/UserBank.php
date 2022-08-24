@@ -28,7 +28,7 @@ class UserBank extends BaseModel
             "bank_id" => $this->bank_id,
             "agency" => $this->agency_digit != null ? $this->agency . '-' . $this->agency_digit : $this->agency,
             "checking_account" => $this->checking_account_digit != null ? $this->checking_account . '-' . $this->checking_account_digit : $this->checking_account,
-            "pix" => $this->pix,
+            "pix" => $this->pix != null ? $this->pix : 'Não informado',
             "type_transfers_id" => $this->type_transfers_id,
         ];
     }
