@@ -105,6 +105,7 @@ class RequestService
         $request->bank_id = $bank->name . ' (cód: '. $bank->code.')';
 
         $request->agency = $userBank[0]->agency;
+        $request->pix = $userBank[0]->pix;
         $request->checking_account = $userBank[0]->checking_account;
         
         $request->hash_id = $user->hash_id;

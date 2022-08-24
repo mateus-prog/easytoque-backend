@@ -26,8 +26,8 @@ class UserBank extends BaseModel
         return (object) [
             "id" => $this->id,
             "bank_id" => $this->bank_id,
-            "agency" => $this->agency . '-' . $this->agency_digit,
-            "checking_account" => $this->checking_account . '-' . $this->checking_account_digit,
+            "agency" => $this->agency_digit != null ? $this->agency . '-' . $this->agency_digit : $this->agency,
+            "checking_account" => $this->checking_account_digit != null ? $this->checking_account . '-' . $this->checking_account_digit : $this->checking_account,
             "pix" => $this->pix,
             "type_transfers_id" => $this->type_transfers_id,
         ];
