@@ -75,7 +75,9 @@ class RequestService
             $request->hash_id = $user->hash_id;
 
             $request->user_id = $user->first_name . ' ' . $user->last_name;
+            
             $request->url_invoice = $request->url_invoice != '' ? $this->uploadService->pathFile('storage/'.$request->url_invoice) : '';  
+            $request->url_proof = $request->url_proof != '' ? $this->uploadService->pathFile('storage/'.$request->url_proof) : '';  
         }
 
         return $requests;

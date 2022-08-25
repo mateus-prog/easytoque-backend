@@ -46,9 +46,9 @@ class RequestController extends Controller
     public function getByUser()
     {
         $requests = $this->requestService->getByUser();
-        foreach ($requests as $request) {
+        /*foreach ($requests as $request) {
             $request->url_proof = $request->url_proof != '' ? $this->uploadService->pathFile('storage/'.$request->url_proof) : '';
-        }
+        }*/
 
         return $this->success($requests, HttpStatus::SUCCESS);
     }
