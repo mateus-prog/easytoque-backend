@@ -119,6 +119,9 @@ class RequestService
         $reason = $this->reasonRepository->findByFieldWhereReturnObject('request_id', '=', $id);
         $request->reason = empty($reason[0]) ? '' : $reason[0]->reason;
 
+        $request->url_invoice = $request->url_invoice != '' ? $this->uploadService->pathFile('storage/'.$request->url_invoice) : '';  
+        $request->url_proof = $request->url_proof != '' ? $this->uploadService->pathFile('storage/'.$request->url_proof) : '';  
+
         return $request;
     }
 
