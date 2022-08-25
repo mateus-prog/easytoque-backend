@@ -9,6 +9,7 @@ use App\Repositories\Elouquent\UserCorporateRepository;
 use App\Repositories\Elouquent\UserBankRepository;
 use App\Repositories\Elouquent\BankRepository;
 use App\Repositories\Elouquent\ReasonRepository;
+use App\Services\Upload\UploadService;
 use App\Helpers\Format;
 
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class RequestService
         $this->userBankRepository = new UserBankRepository();
         $this->bankRepository = new BankRepository();
         $this->reasonRepository = new ReasonRepository();
+        $this->uploadService = new UploadService();
     }
 
     /**
@@ -73,7 +75,7 @@ class RequestService
             $request->hash_id = $user->hash_id;
 
             $request->user_id = $user->first_name . ' ' . $user->last_name;
-            
+            $request->url_invoice = $request->url_invoice != '' ? $this->uploadService->pathFile('storage/'.$request->url_invoice) : '';  
         }
 
         return $requests;
