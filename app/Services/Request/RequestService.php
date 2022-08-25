@@ -36,7 +36,7 @@ class RequestService
     */
     public function all()
     {
-        $requests[] = $this->requestRepository->all();
+        $requests = $this->requestRepository->all();
         return $this->traitReturnDisplay($requests);
     }
 
