@@ -8,7 +8,7 @@ services:
     image: mguizelini/laravel:prod
     container_name: laravel
     volumes:
-     - ./public/upload:/var/www/public/upload
+     - ./storage:/var/www/public/storage
     tty: true
     networks:
       - easytoque-network
