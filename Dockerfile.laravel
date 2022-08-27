@@ -48,10 +48,10 @@ RUN cp local.env .env
 RUN php artisan key:generate
 
 # Create storage link
-RUN php artisan storage:link
+#RUN php artisan storage:link
 
+RUN mkdir /var/www/public/upload
 RUN chown -R www-data:www-data /var/www/public
-RUN chown -R www-data:www-data /var/www/storage
 
 # Run schedule tasks
 #RUN php artisan schedule:work
