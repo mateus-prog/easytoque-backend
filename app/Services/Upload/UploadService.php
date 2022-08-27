@@ -36,7 +36,6 @@ class UploadService
             $path = '';
             //se fizer upload do arquivo
             if($request->hasFile($inputUpload) && $request->url_logo->isValid()){
-                dd($pathUpload);
                 $path = $request->url_logo->store($pathUpload); 
             }
 
