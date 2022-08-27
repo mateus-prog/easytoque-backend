@@ -52,8 +52,10 @@ class LogoController extends Controller
         
         //try {
             $id = $this->logoService->getUserCorporateId();
+            dump($id);
 
             $pathNew = $this->uploadService->uploadFileLogo($request, 'url_logo', 'logos');
+            dd($pathNew);
             if ($this->uploadService->verifyFile($pathNew)) {
                 $userCorporate = $this->userCorporateService->findById($id);
                 //pega o nome do arquivo
