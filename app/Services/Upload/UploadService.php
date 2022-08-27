@@ -37,6 +37,7 @@ class UploadService
             //se fizer upload do arquivo
             if($request->hasFile($inputUpload) && $request->url_logo->isValid()){
                 $path = $request->url_logo->store($pathUpload); 
+                shell_exec('sudo docker cp laravel:/var/www/storage/app/public/'.$path.' /home/larahthamires2/easytoque-backend/public/'.$path);
             }
 
             return $path;
