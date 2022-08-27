@@ -50,7 +50,7 @@ class LogoController extends Controller
     public function updateLogo(Request $request)
     {
         
-        try {
+        //try {
             $id = $this->logoService->getUserCorporateId();
 
             $pathNew = $this->uploadService->uploadFileLogo($request, 'url_logo', 'logos');
@@ -69,13 +69,13 @@ class LogoController extends Controller
             $path = $this->uploadService->pathFile('storage/'.$pathNew);
 
             return $this->success(['path' => $path], HttpStatus::SUCCESS);
-        } catch (AuthorizationException $aE) {
+        /*} catch (AuthorizationException $aE) {
             return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
         } catch (ModelNotFoundException $m) {
             return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        }
+        }*/
     }
 
     public function destroyLogo()
