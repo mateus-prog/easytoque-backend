@@ -52,7 +52,7 @@ class LogoController extends Controller
         
         //try {
             $id = $this->logoService->getUserCorporateId();
-            dump($id);
+            dd($id);
 
             $pathNew = $this->uploadService->uploadFileLogo($request, 'url_logo', 'logos');
             dd($pathNew);
