@@ -7,8 +7,11 @@ services:
       dockerfile: Dockerfile.laravel
     image: mguizelini/laravel:prod
     container_name: laravel
+    user: "1000:1000"
+    #volumes:
+     #- ./storage:/var/www/storage
     volumes:
-     - ./storage:/var/www/storage
+        - ./:/var/www
     tty: true
     networks:
       - easytoque-network
