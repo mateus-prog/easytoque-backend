@@ -38,8 +38,6 @@ RUN chown -R www-data:www-data /var/www
 
 # Install composer dependencies
 RUN composer install
-#RUN php artisan optimize
-#RUN php artisan route:list
 
 # Copy local.env to .env
 RUN cp local.env .env
