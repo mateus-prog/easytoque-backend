@@ -32,7 +32,7 @@ class UploadService
     public function uploadFileLogo($request, $inputUpload, $pathUpload)
     {
         //shell_exec('docker cp laravel:/var/www/storage/app/public/logos/wwXvWZmFsgNn711vx4Ls2fw8WWYeNijbEcgf9h6U.jpg /home/larahthamires2/easytoque-backend/public/logos/aqui.jpg');
-        exec('sudo docker cp laravel:/var/www/public/logo/logo_default.png /home/larahthamires2/easytoque-backend/public/logos/aqui2.png');
+        exec('docker cp laravel:/var/www/public/logo/logo_default.png /home/larahthamires2/easytoque-backend/public/logos/aqui2.png');
 
         try {
             //inicia com path vazio
