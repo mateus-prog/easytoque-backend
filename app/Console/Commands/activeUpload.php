@@ -21,7 +21,10 @@ class activeUpload extends Command
     protected $description = 'Comando que copia os uploads';
 
     
-    public function __construct(){}
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Execute the console command.
