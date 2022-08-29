@@ -8,7 +8,7 @@ services:
     image: mguizelini/laravel:prod
     container_name: laravel
     volumes:
-      - ./:/var/www
+      - ./storage:/var/www/storage
      #- ./storage:/var/www/storage
     tty: true
     networks:
