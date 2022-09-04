@@ -70,8 +70,10 @@ class RequestController extends Controller
             $this->requestService->update($id, $input);
 
             $requestInf = $this->requestService->findById($id);
+            $userId = $requestInf->user_id;
+            $statusRequestId = $requestInf->status_request_id;
 
-            $this->mailService->sendMailRequest($requestInf->user_id, $requestInf->status_request_id, '');
+            $this->mailService->sendMailRequest($userId, $statusRequestId, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
@@ -100,8 +102,10 @@ class RequestController extends Controller
             $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
 
             $requestInf = $this->requestService->findById($request->id);
-
-            $this->mailService->sendMailRequest($requestInf->user_id, $requestInf->status_request_id, '');
+            $userId = $requestInf->user_id;
+            $statusRequestId = $requestInf->status_request_id;
+            
+            $this->mailService->sendMailRequest($userId, $statusRequestId, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
