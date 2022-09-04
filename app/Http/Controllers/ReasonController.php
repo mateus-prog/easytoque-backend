@@ -44,7 +44,9 @@ class ReasonController extends Controller
 
             $this->requestService->update($input['request_id'], ['status_request_id' => 3]);
 
-            $requestInf = $this->requestService->findById($input['request_id']);
+            $requestId = intval($input['request_id']);
+
+            $requestInf = $this->requestService->findById($requestId);
             $userId = $requestInf->user_id;
             $statusRequestId = $requestInf->status_request_id;
             

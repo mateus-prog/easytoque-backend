@@ -278,7 +278,8 @@ class MailService
 
     public function sendMailRequest($userId, $statusRequestId, $reason)
     {
-        dd($userId);
+        $userId = intval($userId);
+        $statusRequestId = intval($statusRequestId);
         $user = $this->userRepository->findById($userId);
         $mailRecipient = $statusRequestId == 1 ? 'parceiros@toquecolor.com.br' : $user->email;
         $name = $statusRequestId == 1 ? 'Parceiros Easytoque' : $user->first_name;
