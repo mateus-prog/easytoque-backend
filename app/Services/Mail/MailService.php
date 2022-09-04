@@ -280,9 +280,9 @@ class MailService
         return $mailHtml;
     }
 
-    public function sendMailRequest($statusRequestId, $reason)
+    public function sendMailRequest($userId, $statusRequestId, $reason)
     {
-        $userId = Auth::user()->id;
+        //$userId = Auth::user()->id;
 
         $user = $this->userRepository->findById($userId);
 
