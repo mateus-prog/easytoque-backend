@@ -44,7 +44,9 @@ class ReasonController extends Controller
 
             $this->requestService->update($input['request_id'], ['status_request_id' => 3]);
 
-            $this->mailService->sendMailRequest(3, $request->reason);
+            $requestInf = $this->requestService->findById($input['request_id']);
+
+            $this->mailService->sendMailRequest($requestInf->user_id, $requestInf->status_request_id, $request->reason);
             
             return $this->success($reason, HttpStatus::CREATED);
         } catch (Exception $e) {

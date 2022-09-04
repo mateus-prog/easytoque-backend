@@ -69,7 +69,9 @@ class RequestController extends Controller
             $input = $request->only(["status_request_id"]);
             $this->requestService->update($id, $input);
 
-            $this->mailService->sendMailRequest($request->status_request_id, '');
+            $requestInf = $this->requestService->findById($id);
+
+            $this->mailService->sendMailRequest($requestInf->user_id, $requestInf->status_request_id, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
@@ -97,7 +99,9 @@ class RequestController extends Controller
             
             $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
 
-            $this->mailService->sendMailRequest(4, '');
+            $requestInf = $this->requestService->findById($request->id);
+
+            $this->mailService->sendMailRequest($requestInf->user_id, $requestInf->status_request_id, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
@@ -126,7 +130,7 @@ class RequestController extends Controller
                 'url_invoice' => $pathNew, 
             ]);
 
-            $this->mailService->sendMailRequest(1, '');
+            $this->mailService->sendMailRequest($userId, 1, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
