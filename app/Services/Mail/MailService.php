@@ -273,10 +273,7 @@ class MailService
         </p>';
 
         if($reason != '' && $reason != null){
-            $body.=
-            '<p>
-                %reason%
-            </p>';
+            $body.= '<p>'.$reason.'</p>';
         }
 
         $mailHtml = $this->MailBody($body);
