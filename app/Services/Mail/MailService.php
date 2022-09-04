@@ -293,8 +293,8 @@ class MailService
         $name = $user->first_name;
 
         $statusRequest = $this->statusRequestRepository->findById($statusRequestId);
-        $status = $statusRequest[0]['name'];
-        $description = $statusRequest[0]['description'];  
+        $status = $statusRequest->name;
+        $description = $statusRequest->description;  
         
         //mail welcome
         $mailBody = $this->createMailStatus($name, $description, $reason);
