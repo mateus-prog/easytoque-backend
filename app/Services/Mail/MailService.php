@@ -268,13 +268,9 @@ class MailService
     {
         $body = '
         <p>Ol&aacute;, '.utf8_decode($name).'</p>
-        <p>
-            Status da comiss&atilde;o: '.utf8_decode($description).'
-        </p>';
+        <p>Status da comiss&atilde;o: '.utf8_decode($description).'</p>';
 
-        if($reason != '' && $reason != null){
-            $body.= '<p>'.$reason.'</p>';
-        }
+        $body.= $reason != '' || $reason != null ? '<p>'.utf8_decode($reason).'</p>' : '';
 
         $mailHtml = $this->MailBody($body);
         return $mailHtml;
