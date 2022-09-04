@@ -6,6 +6,7 @@ use App\Http\HttpStatus;
 use Illuminate\Http\Request;
 use App\Services\Reason\ReasonService;
 use App\Services\Request\RequestService;
+use App\Services\Mail\MailService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 use Exception;
@@ -21,15 +22,18 @@ class ReasonController extends Controller
 
     protected $reasonService;
     protected $requestService;
+    protected $mailService;
 
     public function __construct(
         ReasonService $reasonService,
-        RequestService $requestService    
+        RequestService $requestService,
+        MailService $mailService    
     )
     {
         $this->middleware(["auth", "verified"]);
         $this->reasonService = $reasonService;
         $this->requestService = $requestService;
+        $this->mailService = $mailService;
     }
 
     public function store(Request $request)
@@ -40,13 +44,8 @@ class ReasonController extends Controller
 
             $this->requestService->update($input['request_id'], ['status_request_id' => 3]);
 
-            /*$messageLog = $input['reason'];
-            $actionId = 1;
-            $idUserLog = Auth::user()->id;
-
-            $log = Log::createLog($idUserLog, $messageLog, $actionId);
-            $this->logService->store($log);*/
-
+            $this->mailService->sendMailRequest(3, $request->reason);
+            
             return $this->success($reason, HttpStatus::CREATED);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\Request\RequestService;
 use App\Services\Upload\UploadService;
 use App\Services\Store\StoreService;
+use App\Services\Mail\MailService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
@@ -23,17 +24,20 @@ class RequestController extends Controller
     protected $requestService;
     protected $uploadService;
     protected $storeService;
+    protected $mailService;
     
     public function __construct(
         RequestService $requestService,
         UploadService $uploadService,
-        StoreService $storeService
+        StoreService $storeService,
+        MailService $mailService
     )
     {
         $this->middleware(["auth", "verified"]);
         $this->requestService = $requestService;
         $this->uploadService = $uploadService;
         $this->storeService = $storeService;
+        $this->mailService = $mailService;
     }
     
     public function index()
@@ -65,6 +69,8 @@ class RequestController extends Controller
             $input = $request->only(["status_request_id"]);
             $this->requestService->update($id, $input);
 
+            $this->mailService->sendMailRequest($request->status_request_id, '');
+
             return response()->noContent();
         } catch (AuthorizationException $aE) {
             return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
@@ -90,6 +96,8 @@ class RequestController extends Controller
             }
             
             $this->requestService->update($request->id, ['url_proof' => $pathNew, 'status_request_id' => '4']);
+
+            $this->mailService->sendMailRequest(4, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
@@ -117,6 +125,8 @@ class RequestController extends Controller
                 'status_request_id' => '1',
                 'url_invoice' => $pathNew, 
             ]);
+
+            $this->mailService->sendMailRequest(1, '');
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {

@@ -11,7 +11,10 @@ use PHPMailer\PHPMailer\OAuth;
 use League\OAuth2\Client\Provider\Google;
 
 use App\Repositories\Elouquent\LogRepository;
+use App\Repositories\Elouquent\UserRepository;
+use App\Repositories\Elouquent\StatusRequestRepository;
 use App\Helpers\Log;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class MailService
@@ -19,6 +22,8 @@ class MailService
     public function __construct()
     {
         $this->logRepository = new LogRepository();
+        $this->userRepository = new UserRepository();
+        $this->statusRequestRepository = new StatusRequestRepository();
     }
 
     public function sendMail($mailRecipient, $mailSubject, $mailBody, $userId, $message = '')
@@ -115,7 +120,8 @@ class MailService
         $this->logRepository->store($log);
     }
 
-    public function MailBody($body){
+    public function MailBody($body)
+    {
         $html = 
         '<style type="text/css">
         img {
@@ -256,5 +262,46 @@ class MailService
 
         $mailHtml = $this->MailBody($body);
         return $mailHtml;
+    }
+
+    public function createMailStatus($name, $description, $reason = '')
+    {
+        $body = '
+        <p>Ol&aacute;, '.utf8_decode($name).'</p>
+        <p>
+            Status da comiss&atilde;o: '.utf8_decode($description).'
+        </p>';
+
+        if($reason != '' && $reason != null){
+            $body.=
+            '<p>
+                %reason%
+            </p>';
+        }
+
+        $mailHtml = $this->MailBody($body);
+        return $mailHtml;
+    }
+
+    public function sendMailRequest($statusRequestId, $reason)
+    {
+        $userId = Auth::user()->id;
+
+        $user = $this->userRepository->findById($userId);
+
+        $mailRecipient = $user->email;
+        $name = $user->first_name;
+
+        $statusRequest = $this->statusRequestRepository->findById($statusRequestId);
+        $status = $statusRequest[0]['name'];
+        $description = $statusRequest[0]['description'];  
+        
+        //mail welcome
+        $mailBody = $this->createMailStatus($name, $description, $reason);
+        $mailSubject = '[Parceiros Easytoque] - Status da Comissao - '.ucfirst($status).' - Easytoque';
+
+        $messageLog = 'Status da Comissao - '.ucfirst($status);
+
+        $this->sendMail($mailRecipient, $mailSubject, $mailBody, $userId, $messageLog);
     }
 }
