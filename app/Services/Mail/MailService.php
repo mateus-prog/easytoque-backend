@@ -282,12 +282,9 @@ class MailService
 
     public function sendMailRequest($userId, $statusRequestId, $reason)
     {
-        //$userId = Auth::user()->id;
-
         $user = $this->userRepository->findById($userId);
-
-        $mailRecipient = $user->email;
-        $name = $user->first_name;
+        $mailRecipient = $statusRequestId == 1 ? 'parceiros@toquecolor.com.br' : $user->email;
+        $name = $statusRequestId == 1 ? 'Parceiros Easytoque' : $user->first_name;
 
         $statusRequest = $this->statusRequestRepository->findById($statusRequestId);
         $status = $statusRequest->name;
