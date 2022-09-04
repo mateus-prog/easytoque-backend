@@ -70,6 +70,7 @@ class RequestController extends Controller
             $this->requestService->update($id, $input);
 
             $requestInf = $this->requestService->findById($id);
+            dd($requestInf);
             $userId = $requestInf->user_id;
             $statusRequestId = $requestInf->status_request_id;
 
