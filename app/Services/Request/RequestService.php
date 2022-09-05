@@ -50,9 +50,13 @@ class RequestService
     public function getByUser()
     {
         $user = Auth::user();
-        $request = $this->requestRepository->findByFieldWhereReturnObject('user_id', '=', $user->id, 'id, value, user_id, status_request_id, created_at, url_proof, url_invoice');
-    
-        return $this->traitReturnDisplay($request, $user->id);
+        $requests = $this->requestRepository->findByFieldWhereReturnObject('user_id', '=', $user->id, 'id, value, user_id, status_request_id, created_at, url_proof, url_invoice');
+        
+        foreach($requests as $request){
+            $request = $this->traitReturnDisplay($request, $request->user_id);
+        }
+
+        return $requests;
     }
 
     public function traitReturnDisplay($request, $userId)
