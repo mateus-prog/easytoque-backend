@@ -63,27 +63,26 @@ class RequestController extends Controller
 
     public function update($id, Request $request)
     {
-        //try {
+        try {
             //Gate::authorize('update', User::findOrFail($id));
 
             $input = $request->only(["status_request_id"]);
             $this->requestService->update($id, $input);
 
             $requestInf = $this->requestService->findById($id);
-            dd($requestInf);
             $userId = $requestInf->user_id;
             $statusRequestId = $requestInf->status_request_id;
 
             $this->mailService->sendMailRequest($userId, $statusRequestId, '');
 
             return response()->noContent();
-        /*} catch (AuthorizationException $aE) {
+        } catch (AuthorizationException $aE) {
             return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
         } catch (ModelNotFoundException $m) {
             return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        }*/
+        }
     }
 
     public function uploadFileProof(Request $request)
