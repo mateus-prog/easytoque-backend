@@ -38,7 +38,7 @@ class RequestService
     {
         $requests = $this->requestRepository->all();
         foreach($requests as $request){
-            $request = $this->traitReturnDisplay($request);
+            $request = $this->traitReturnDisplay($request, $request->user_id);
         }
         return $requests;
     }
@@ -52,12 +52,12 @@ class RequestService
         $user = Auth::user();
         $request = $this->requestRepository->findByFieldWhereReturnObject('user_id', '=', $user->id, 'id, value, user_id, status_request_id, created_at, url_proof, url_invoice');
     
-        return $this->traitReturnDisplay($request);
+        return $this->traitReturnDisplay($request, $user->id);
     }
 
-    public function traitReturnDisplay($request)
+    public function traitReturnDisplay($request, $userId)
     {
-        $user = $this->userRepository->findById($request->user_id);
+        $user = $this->userRepository->findById($userId);
 
         $statusRequest = $this->statusRequestRepository->findById($request->status_request_id);
         $request->status_name = $statusRequest->name;
@@ -77,6 +77,7 @@ class RequestService
         
         $request->hash_id = $user->hash_id;
 
+        $request->user_id = $userId;
         $request->user_name = $user->first_name . ' ' . $user->last_name;
         
         $reason = $this->reasonRepository->findByFieldWhereReturnObject('request_id', '=', $request->id);
@@ -99,7 +100,7 @@ class RequestService
         $request = $this->requestRepository->findById($id);
         $request->value = Format::valueBR($request->value);
 
-        $request = $this->traitReturnDisplay($request);
+        $request = $this->traitReturnDisplay($request, $request->user_id);
 
         return $request;
     }
