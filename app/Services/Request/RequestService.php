@@ -60,7 +60,7 @@ class RequestService
         $user = $this->userRepository->findById($request->user_id);
 
         $statusRequest = $this->statusRequestRepository->findById($request->status_request_id);
-        $request->status_request_id = $statusRequest->name;
+        $request->status_name = $statusRequest->name;
         $request->color = $statusRequest->color;
 
         $userCorporate = $this->userCorporateRepository->findByFieldWhereReturnObject('user_id', '=', $request->user_id);
