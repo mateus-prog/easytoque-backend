@@ -54,6 +54,16 @@ class activePartners extends Command
      */
     public function handle()
     {
+        $clientIdMax = 0;
+        $usersStore = $this->userStoreService->all();
+        foreach($usersStore as $userStore){
+            $clientId = $userStore->client_id;
+
+            if($clientId != '' && $clientId != null){
+                $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
+            }
+        }
+
         $users = $this->userService->all();
         foreach($users as $user)
         {
@@ -65,16 +75,6 @@ class activePartners extends Command
                 $user = $this->userService->findById($user->id);
                 if($user->status_user_id == 1)
                 {   
-                    $clientIdMax = 0;
-                    $usersStore = $this->userStoreService->all();
-                    foreach($usersStore as $userStore){
-                        $clientId = $userStore->client_id;
-
-                        if($clientId != '' && $clientId != null){
-                            $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
-                        }
-                    }
-
                     $clientIdMax++;
 
                     //incluir a loja no banco de dados
