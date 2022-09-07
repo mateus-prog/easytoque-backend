@@ -12,6 +12,15 @@ class UserStoreService
         $this->userStoreRepository = new UserStoreRepository();
     }
 
+    /**
+     * Selecione todos os usuarios
+     * @return array
+    */
+    public function all()
+    {
+        return $this->userStoreRepository->all();
+    }
+
     public function store(array $request, int $userId)
     {
         try {
