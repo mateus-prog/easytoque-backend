@@ -13,7 +13,8 @@ use App\Http\Controllers\UserBankController;
 |
 */
 
-Route::get('/users/corporate/hash', [UserCorporateController::class, 'getUserHash']);
+//retirar essa rota
+//Route::get('/users/corporate/hash', [UserCorporateController::class, 'getUserHash']);
 Route::get('/users/corporate/{userId}/edit', [UserCorporateController::class, 'getUserCorporateEditByUser']);
 Route::get('/users/corporate/{userId}', [UserCorporateController::class, 'getUserCorporateByUser']);
 
