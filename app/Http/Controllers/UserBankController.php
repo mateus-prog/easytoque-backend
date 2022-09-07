@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\HttpStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Services\User\UserService;
 use App\Services\User\UserBankService;
 use App\Services\User\UserCorporateService;
@@ -14,6 +13,7 @@ use App\Traits\Pagination;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Facades\Auth;
 
 class UserBankController extends Controller
 {
@@ -52,25 +52,35 @@ class UserBankController extends Controller
             $input = $request->only(["bank_id", "agency", "agency_digit", "checking_account", "checking_account_digit", "pix"]);
             $this->userBankService->update($id, $input);
 
-            $input = $request->only(["phone", "whatsapp", "password"]);
+            $user = $this->userService->findById($id);
+            if($user->status_user_id == 1){
+                if($request['password'] != null && $request['password'] != ''){
+                    $input = $request->only(["phone", "whatsapp", "password"]);
+                }else{
+                    $input = $request->only(["phone", "whatsapp"]);
+                }
+            }else{
+                $input = $request->only(["phone", "whatsapp"]);
+            }
+
             $this->userService->update($id, $input);
 
-            $user = $this->userService->findById($id);
+            if($user->status_user_id != 1 && $user->id != Auth::user()->id){
+                $userCorporate = $this->userCorporateService->getUserCorporateByUser($user->id);
+                $userCorporate = $userCorporate[0];
+                $mailManager = 'parceiros+00@toquecolor.com.br';
 
-            $userCorporate = $this->userCorporateService->getUserCorporateByUser($user->id);
-            $userCorporate = $userCorporate[0];
-            $mailManager = 'parceiros+00@toquecolor.com.br';
+                //sendMail complete register user
+                $mailRecipient = $mailManager;
+                
+                //mail welcome
+                $mailBody = $this->mailService->createMailCompleteRegisterBody($user->first_name, $userCorporate->corporate_name, $user->email);
+                $mailSubject = "[Parceiros Easytoque] - Mais um parceiro finalizou o cadastro";
 
-            //sendMail complete register user
-            $mailRecipient = $mailManager;
-            
-            //mail welcome
-            $mailBody = $this->mailService->createMailCompleteRegisterBody($user->first_name, $userCorporate->corporate_name, $user->email);
-            $mailSubject = "[Parceiros Easytoque] - Mais um parceiro finalizou o cadastro";
+                $messageLog = "Finalizou Cadastro";
 
-            $messageLog = "Finalizou Cadastro";
-
-            $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
+                $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
+            }
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
