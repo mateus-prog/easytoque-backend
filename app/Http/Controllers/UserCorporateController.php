@@ -6,10 +6,9 @@ use App\Http\HttpStatus;
 use App\Services\User\UserService;
 use App\Services\User\UserBankService;
 use App\Services\User\UserCorporateService;
+use App\Services\User\UserStoreService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
-
-use Illuminate\Support\Facades\Hash;
 
 class UserCorporateController extends Controller
 {
@@ -19,17 +18,20 @@ class UserCorporateController extends Controller
     protected $userService;
     protected $userBankService;
     protected $userCorporateService;
+    protected $userStoreService;
     
     public function __construct(
         UserService $userService,
         UserBankService $userBankService,
-        UserCorporateService $userCorporateService
+        UserCorporateService $userCorporateService,
+        UserStoreService $userStoreService
     )
     {
         //$this->middleware(["auth", "verified"]);
         $this->userService = $userService;
         $this->userBankService = $userBankService;
         $this->userCorporateService = $userCorporateService;
+        $this->userStoreService = $userStoreService;
     }
 
     public function getUserCorporateByUser($userId)
@@ -63,6 +65,7 @@ class UserCorporateController extends Controller
         return $this->success($userCorporateBank, HttpStatus::SUCCESS);
     }
 
+    //retirar esse metodo
     public function getUserHash(){
         $users = $this->userService->all();
         foreach($users as $user)
@@ -89,5 +92,16 @@ class UserCorporateController extends Controller
                 }
             }
         }
+
+        $clientIdMax = 0;
+        $usersStore = $this->userStoreService->all();
+        foreach($usersStore as $userStore){
+            $clientId = $userStore->client_id;
+
+            if($clientId != '' && $clientId != null){
+                $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
+            }
+        }
+        dd($clientIdMax);
     }
 }
