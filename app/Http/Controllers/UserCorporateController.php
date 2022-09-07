@@ -68,16 +68,25 @@ class UserCorporateController extends Controller
         foreach($users as $user)
         {
             //verifica se o usuario é Parceiro e se o status esta pendente
-            if($user->role_id == 4 && $user->status_user_id == 1 && $user->senha_hash == '0')
+            if($user->role_id == 4 && $user->senha_hash == '0')
             {
-                $password = Hash::make($user->password);
                 $hash_id = str_replace('/', '', Hash::make($user->email));
 
-                $data = array(
-                    'password' => $password,
-                    'hash_id' => $hash_id,
-                    'senha_hash' => '1',
-                );
+                if($user->status_user_id == 1){
+
+                    $password = Hash::make($user->password);
+
+                    $data = array(
+                        'password' => $password,
+                        'hash_id' => $hash_id,
+                        'senha_hash' => '1',
+                    );
+                }else{
+                    $data = array(
+                        'hash_id' => $hash_id,
+                        'senha_hash' => '1',
+                    );
+                }
 
                 $this->userService->update($user->id, $data);
             }
