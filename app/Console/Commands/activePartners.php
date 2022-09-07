@@ -9,8 +9,6 @@ use App\Services\ClickSign\ClickSignService;
 use App\Services\Mail\MailService;
 use App\Services\Store\StoreService;
 
-use Illuminate\Support\Facades\Hash;
-
 class activePartners extends Command
 {
     /**
@@ -56,25 +54,6 @@ class activePartners extends Command
      */
     public function handle()
     {
-        /*$users = $this->userService->all();
-        foreach($users as $user)
-        {
-            //verifica se o usuario é Parceiro e se o status esta pendente
-            if($user->role_id == 4 && $user->senha_hash == '0')
-            {
-                $password = Hash::make($user->password);
-                $hash_id = str_replace('/', '', Hash::make($user->email));
-
-                $data = array(
-                    'password' => $password,
-                    'hash_id' => $hash_id,
-                    'senha_hash' => '1',
-                );
-
-                $this->userService->update($user->id, $data);
-            }
-        }*/
-
         $users = $this->userService->all();
         foreach($users as $user)
         {
@@ -92,7 +71,7 @@ class activePartners extends Command
                         $clientId = $userStore->client_id;
 
                         if($clientId != '' && $clientId != null){
-                            $clientIdMax = $clientIdMax < $clientId ? $clientId : $clientIdMax;
+                            $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
                         }
                     }
 
