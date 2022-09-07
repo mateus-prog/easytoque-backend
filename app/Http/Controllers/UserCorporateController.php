@@ -70,7 +70,7 @@ class UserCorporateController extends Controller
             //verifica se o usuario é Parceiro e se o status esta pendente
             if($user->role_id == 4 && $user->senha_hash == '0')
             {
-                dd($user->password);
+                dd($user);
                 $password = Hash::make($user->password);
                 $hash_id = str_replace('/', '', Hash::make($user->email));
 
