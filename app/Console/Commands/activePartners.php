@@ -56,7 +56,7 @@ class activePartners extends Command
      */
     public function handle()
     {
-        $users = $this->userService->all();
+        /*$users = $this->userService->all();
         foreach($users as $user)
         {
             //verifica se o usuario é Parceiro e se o status esta pendente
@@ -73,9 +73,13 @@ class activePartners extends Command
 
                 $this->userService->update($user->id, $data);
             }
+        }*/
 
+        $users = $this->userService->all();
+        foreach($users as $user)
+        {
             //verifica se o usuario é Parceiro e se o status esta pendente
-            /*if($user->role_id == 4 && $user->status_user_id == 3)
+            if($user->role_id == 4 && $user->status_user_id == 3)
             {
                 $this->clickSignService->viewDocument($user->id);
                 
@@ -95,7 +99,7 @@ class activePartners extends Command
                     $clientIdMax++;
 
                     //incluir a loja no banco de dados
-                    $response = $this->storeService->createStoreMagento($user->id);
+                    $response = $this->storeService->createStoreMagento($clientIdMax);
                     $storeId = $response['loja_id'];
                     
                     $id = $this->userStoreService->getUserStoreByUser($user->id);
@@ -104,15 +108,15 @@ class activePartners extends Command
                         'client_id' => $clientIdMax,
                     );
 
-                    $store = $this->userStoreService->findById(strval($id));
-
                     $this->userStoreService->update($id, $data);
                     
+                    $store = $this->userStoreService->findById(strval($id));
+
                     //sendMail complete register user
                     $mailRecipient = $user->email;
                     
                     $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$store->client_id;
-
+                    
                     //mail welcome
                     $mailBody = $this->mailService->createMailPartnerAddFinish($user->first_name, $mailRecipient, $linkStore);
                     $mailSubject = "[Parceiros Easytoque] - Seus dados de acesso e sua loja!";
@@ -121,7 +125,7 @@ class activePartners extends Command
                     
                     $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
                 }
-            }*/
+            }
         }
     }
 }
