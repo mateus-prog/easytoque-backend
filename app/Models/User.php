@@ -82,6 +82,7 @@ class User extends Authenticatable
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
             "senha_hash" => $this->senha_hash,
+            "password" => $this->password,
             "roles" => $this->roles()
                 ->get()
                 ->map->formatWithoutPermissions(),
