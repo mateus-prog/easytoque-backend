@@ -10,6 +10,8 @@ use App\Services\User\UserStoreService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
+use Illuminate\Support\Facades\Hash;
+
 class UserCorporateController extends Controller
 {
     use ApiResponser;
@@ -73,18 +75,20 @@ class UserCorporateController extends Controller
             //verifica se o usuario é Parceiro e se o status esta pendente
             if($user->role_id == 4 && $user->senha_hash == '0')
             {
+                $hash_id = str_replace('/', '', Hash::make($user->email));
+
                 if($user->status_user_id == 1){
 
                     $data = array(
                         'password' => $user->password,
-                        'hash_id' => $user->email,
+                        'hash_id' => $hash_id,
                         'senha_hash' => '1',
                     );
 
                     $this->userService->update($user->id, $data);
                 }else{
                     $data = array(
-                        'hash_id' => $user->email,
+                        'hash_id' => $hash_id,
                         'senha_hash' => '1',
                     );
 

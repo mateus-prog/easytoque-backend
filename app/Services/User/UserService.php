@@ -7,7 +7,7 @@ use App\Repositories\Elouquent\StatusUserRepository;
 use App\Repositories\Elouquent\RolesRepository;
 use App\Repositories\Elouquent\UserStoreRepository;
 use App\Repositories\Elouquent\UserCorporateRepository;
-use App\Models\User;
+
 use Illuminate\Support\Facades\Hash;
 use Exception;
 
@@ -128,9 +128,8 @@ class UserService
     public function update($id, $request)
     {
         try {
-            if($request['password']){ $request['password'] = Hash::make($request['password']);}
-            if($request['hash_id']){ $request['hash_id'] = str_replace('/', '', Hash::make($request['hash_id'])); }
-            
+            if($request['password']){ $request['password'] = Hash::make($request['password']); }
+
             return $this->userRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
