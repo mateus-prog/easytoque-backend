@@ -92,16 +92,5 @@ class UserCorporateController extends Controller
                 }
             }
         }
-
-        $clientIdMax = 0;
-        $usersStore = $this->userStoreService->all();
-        foreach($usersStore as $userStore){
-            $clientId = $userStore->client_id;
-
-            if($clientId != '' && $clientId != null){
-                $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
-            }
-        }
-        dd($clientIdMax);
     }
 }
