@@ -53,7 +53,7 @@ class UserBankController extends Controller
             $this->userBankService->update($id, $input);
 
             $user = $this->userService->findById($id);
-            if($request['password'] != null && $request['password'] != ''){
+            if(isset($request['password'])){
                 $input = $request->only(["phone", "whatsapp", "password"]);
             }else{
                 $input = $request->only(["phone", "whatsapp"]);
