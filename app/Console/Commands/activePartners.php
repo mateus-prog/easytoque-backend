@@ -75,7 +75,7 @@ class activePartners extends Command
             }
 
             //verifica se o usuario é Parceiro e se o status esta pendente
-            if($user->role_id == 4 && $user->status_user_id == 3)
+            /*if($user->role_id == 4 && $user->status_user_id == 3)
             {
                 $this->clickSignService->viewDocument($user->id);
                 
@@ -121,7 +121,7 @@ class activePartners extends Command
                     
                     $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
                 }
-            }
+            }*/
         }
     }
 }
