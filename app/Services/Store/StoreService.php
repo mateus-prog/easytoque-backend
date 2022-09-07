@@ -23,18 +23,16 @@ class StoreService
      * @param $id int //user id
      * @return array
     */
-    public function createStoreMagento(int $id)
+    public function createStoreMagento(int $id, int $clientId)
     {
         $user = $this->userRepository->findById($id);
         $urlStore = 'https://loja.easytoque.com.br/createStore.php';
 
         $storeName = $user->first_name . ' ' . $user->last_name;
 
-        //$id = 204;
-
         $response = Http::asForm()->post($urlStore, [
             'store_name' => $storeName,
-            'rev_id' => $id,
+            'rev_id' => $clientId,
         ]);
         
         return $response;

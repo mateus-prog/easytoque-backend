@@ -78,7 +78,7 @@ class activePartners extends Command
                     $clientIdMax++;
 
                     //incluir a loja no banco de dados
-                    $response = $this->storeService->createStoreMagento($clientIdMax);
+                    $response = $this->storeService->createStoreMagento($user->id, $clientIdMax);
                     $storeId = $response['loja_id'];
                     
                     $id = $this->userStoreService->getUserStoreByUser($user->id);
