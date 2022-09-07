@@ -67,6 +67,7 @@ class UserCorporateController extends Controller
         $users = $this->userService->all();
         foreach($users as $user)
         {
+            dd($user);
             //verifica se o usuario é Parceiro e se o status esta pendente
             if($user->role_id == 4 && $user->senha_hash == '0')
             {
