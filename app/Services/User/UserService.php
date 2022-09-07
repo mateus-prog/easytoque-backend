@@ -52,10 +52,8 @@ class UserService
 
             if($roleId == 4){
                 $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'commission');
-                if(!empty($store)){
-                    $user->commission = str_replace('.', ',', $store[0]['commission']);
-                }
-
+                $user->commission = str_replace('.', ',', $store[0]['commission']);
+                
                 $corporate = $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'cnpj, state_id');
                 $user->cnpj = $corporate[0]['cnpj'];
                 //$user->state_id = $corporate[0]['state_id'];
