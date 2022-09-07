@@ -128,7 +128,9 @@ class UserService
     public function update($id, $request)
     {
         try {
-            $request['password'] = $request['password'] ? Hash::make($request['password']) : '';
+            if($request['password']){
+                $request['password'] = Hash::make($request['password']);
+            }
 
             return $this->userRepository->update($id, $request);
         } catch (Exception $e) {
