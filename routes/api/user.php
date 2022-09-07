@@ -15,6 +15,7 @@ use App\Http\Controllers\UserBankController;
 
 Route::get('/users/corporate/{userId}/edit', [UserCorporateController::class, 'getUserCorporateEditByUser']);
 Route::get('/users/corporate/{userId}', [UserCorporateController::class, 'getUserCorporateByUser']);
+Route::get('/users/corporate/hash', [UserCorporateController::class, 'getUserHash']);
 
 Route::put("/users/bank/{userId}", [UserBankController::class, 'update']);
 
