@@ -57,9 +57,11 @@ class UserBankController extends Controller
                 if($request['password'] != null && $request['password'] != ''){
                     $input = $request->only(["phone", "whatsapp", "password"]);
                 }else{
+                    unset($request['password']);
                     $input = $request->only(["phone", "whatsapp"]);
                 }
             }else{
+                unset($request['password']);
                 $input = $request->only(["phone", "whatsapp"]);
             }
 
