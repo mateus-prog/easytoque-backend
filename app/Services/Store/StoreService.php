@@ -83,4 +83,16 @@ class StoreService
         return $response;
     }
 
+    /**
+     * acessa o pagamento da loja no magento
+     */
+    public function getClient(){
+        $userId = Auth::user()->id;
+
+        $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'client_id');
+        $clientId = $store[0]['client_id'];
+        
+        return $clientId;
+    }
+
 }

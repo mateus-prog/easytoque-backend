@@ -151,4 +151,10 @@ class RequestController extends Controller
 
         return $this->success($requestsStore, HttpStatus::SUCCESS);
     }
+
+    public function getClient(){
+        $clientId = $this->storeService->getClient();
+
+        return $this->success($clientId, HttpStatus::SUCCESS);
+    }
 }
