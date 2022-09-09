@@ -63,7 +63,7 @@ class UserBankController extends Controller
 
             $this->userService->update($id, $input);
 
-            if($user->status_user_id != 1 && $user->id == Auth::user()->id){
+            if($user->status_user_id != 1){
                 $userCorporate = $this->userCorporateService->getUserCorporateByUser($user->id);
                 $userCorporate = $userCorporate[0];
                 $mailManager = 'parceiros+00@toquecolor.com.br';
