@@ -90,7 +90,7 @@ class StoreService
         $userId = Auth::user()->id;
 
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'client_id');
-        $clientId = $store[0]['client_id'];
+        $clientId = isset($store[0]) ? $store[0]['client_id'] : '';
         
         return $clientId;
     }
