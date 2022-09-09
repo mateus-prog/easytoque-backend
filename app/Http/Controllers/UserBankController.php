@@ -61,7 +61,7 @@ class UserBankController extends Controller
                 $input = $request->only(["phone", "whatsapp"]);
             }
 
-            $this->userService->update($id, $input);
+            $this->userService->update($user->id, $input);
 
             if($user->status_user_id != 1){
                 $userCorporate = $this->userCorporateService->getUserCorporateByUser($user->id);
