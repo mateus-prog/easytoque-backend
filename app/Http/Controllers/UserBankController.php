@@ -49,6 +49,7 @@ class UserBankController extends Controller
     public function update($id, Request $request)
     {
         //try {
+            dd($id);
             $input = $request->only(["bank_id", "agency", "agency_digit", "checking_account", "checking_account_digit", "pix"]);
             $this->userBankService->update($id, $input);
 
