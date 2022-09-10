@@ -49,13 +49,12 @@ class UserBankController extends Controller
     public function update($id, Request $request)
     {
         //try {
-            dd($id);
+            
+
             $input = $request->only(["bank_id", "agency", "agency_digit", "checking_account", "checking_account_digit", "pix"]);
             $this->userBankService->update($id, $input);
 
-            $userBank = $this->userBankService->findById($id);
-
-            $user = $this->userService->findById($userBank->user_id);
+            $user = $this->userService->findById($id);
             if(isset($request['password'])){
                 $input = $request->only(["phone", "whatsapp", "password"]);
             }else{
