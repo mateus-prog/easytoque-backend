@@ -89,19 +89,14 @@ class AuthController extends Controller
             if(!empty($user)){
                 $userId = $user[0]['id'];
                 
-                //Envio de email com os acessos
-                $store = $this->userStoreService->findById($userId);
-
                 //sendMail complete register user
                 $mailRecipient = $user->email;
                 
-                $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$store->client_id;
-                
                 //mail welcome
-                $mailBody = $this->mailService->createMailPasswordPartner($user->first_name, $password, $mailRecipient, $linkStore);
-                $mailSubject = "[Parceiros Easytoque] - Seus dados de acesso e sua loja!";
+                $mailBody = $this->mailService->createMailPasswordPartner($user->first_name, $password, $mailRecipient);
+                $mailSubject = "[Parceiros Easytoque] - Seus dados de acesso!";
 
-                $messageLog = "Dados da loja";
+                $messageLog = "Dados do usuário";
                 
                 $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
 

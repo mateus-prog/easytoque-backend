@@ -264,7 +264,7 @@ class MailService
         return $mailHtml;
     }
 
-    public function createMailPasswordPartner($name, $password, $email, $linkStore)
+    public function createMailPasswordPartner($name, $password, $email)
     {
         $body = '
             <p>Ol&aacute;, '.utf8_decode($name).'</p>
@@ -275,7 +275,6 @@ class MailService
                 <li><b>Acesso ao painel:</b> <a href="https://parceiro.easytoque.com.br/login.php">https://parceiro.easytoque.com.br/login.php</a></li>
                 <li><b>E-mail de acesso:</b> '.$email.'</li>
                 <li><b>Senha de acesso:</b>'.$password.'</li>
-                <li><b>Endere&ccedil;o da loja:</b> <a href="'.$linkStore.'">'.$linkStore.'</a></li>
             </ul>';
 
         $mailHtml = $this->MailBody($body);
