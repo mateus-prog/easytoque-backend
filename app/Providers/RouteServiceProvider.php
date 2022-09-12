@@ -47,8 +47,6 @@ class RouteServiceProvider extends ServiceProvider
             $this->loadApiRoute("user");
             $this->loadApiRoute("role");
             $this->loadApiRoute("permission");
-            $this->loadApiRoute("verify");
-            $this->loadApiRoute("reset");
             $this->loadApiRoute("menu");
             $this->loadApiRoute("reason");
             $this->loadApiRoute("bank");
