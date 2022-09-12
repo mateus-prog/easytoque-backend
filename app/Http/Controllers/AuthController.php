@@ -82,7 +82,7 @@ class AuthController extends Controller
 
     public function reset(Request $request)
     {
-        try {
+        //try {
             $password = $this->generatePassword();
             $user = $this->userService->findByMail($request['email']);
 
@@ -107,9 +107,9 @@ class AuthController extends Controller
             }else{
                 return response()->noContent();
             }
-        } catch (Exception $e) {
+        /*} catch (Exception $e) {
             return $this->error($e->getMessage(), 500);
-        }
+        }*/
     }
 
     function generatePassword($qtyCaraceters = 8)
