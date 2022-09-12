@@ -88,6 +88,17 @@ class UserService
     /**
      * Display the specified resource.
      *
+     * @param  string  $mail
+     * @return \Illuminate\Http\Response
+     */
+    public function findByMail(string $mail)
+    {
+        return $this->userRepository->findByFieldWhereReturnArray('email', '=', $mail, 'id');
+    }
+
+    /**
+     * Display the specified resource.
+     *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
