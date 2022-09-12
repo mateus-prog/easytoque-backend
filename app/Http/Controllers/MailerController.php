@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//use App\Http\HttpStatus;
 use App\Traits\ApiResponser;
 use App\Services\Mail\MailService;
 
