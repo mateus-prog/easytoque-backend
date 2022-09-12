@@ -83,6 +83,7 @@ class AuthController extends Controller
     public function reset(Request $request)
     {
         //try {
+            dd($request);
             $password = $this->generatePassword();
             $user = $this->userService->findByMail($request['email']);
 
