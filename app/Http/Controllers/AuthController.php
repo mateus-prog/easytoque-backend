@@ -13,6 +13,7 @@ use App\Http\Requests\Authentication\SignUpRequest;
 use App\Services\Authentication\SignInUserService;
 use App\Services\Authentication\SignUpUserService;
 use App\Services\User\UserService;
+use App\Services\Mail\MailService;
 use Exception;
 
 class AuthController extends Controller
@@ -20,12 +21,15 @@ class AuthController extends Controller
     use ApiResponser;
 
     protected $userService;
+    protected $mailService;
     
     public function __construct(
-        UserService $userService
+        UserService $userService,
+        MailService $mailService
     )
     {
         $this->userService = $userService;
+        $this->mailService = $mailService;
     }
 
     public function register(SignUpRequest $request)
@@ -83,10 +87,9 @@ class AuthController extends Controller
     public function reset(Request $request)
     {
         //try {
-            dd($request['email']);
             $password = $this->generatePassword();
             $user = $this->userService->findByMail($request['email']);
-
+            dd($user);
             if(!empty($user)){
                 $userId = $user[0]['id'];
                 
@@ -99,7 +102,7 @@ class AuthController extends Controller
 
                 $messageLog = "Dados do usuário";
                 
-                $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
+                $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $userId, $messageLog);
 
                 //update de senha
                 $this->userService->update($userId, ['password' => $password]);
