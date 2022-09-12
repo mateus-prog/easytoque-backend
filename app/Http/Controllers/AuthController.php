@@ -89,9 +89,10 @@ class AuthController extends Controller
         //try {
             $password = $this->generatePassword();
             $user = $this->userService->findByMail($request['email']);
-            dd($user);
+
             if(!empty($user)){
                 $userId = $user[0]['id'];
+                $user = $this->userService->findById($userId);
                 
                 //sendMail complete register user
                 $mailRecipient = $user->email;
