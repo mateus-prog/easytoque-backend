@@ -274,7 +274,7 @@ class MailService
             <ul>
                 <li><b>Acesso ao painel:</b> <a href="https://parceiro.easytoque.com.br/login.php">https://parceiro.easytoque.com.br/login.php</a></li>
                 <li><b>E-mail de acesso:</b> '.$email.'</li>
-                <li><b>Senha de acesso:</b>'.$password.'</li>
+                <li><b>Senha de acesso:</b> '.$password.'</li>
             </ul>';
 
         $mailHtml = $this->MailBody($body);
