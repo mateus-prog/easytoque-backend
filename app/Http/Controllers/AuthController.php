@@ -28,34 +28,6 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
-    /**
-     * @OA\Post(
-     * path="/auth/register",
-     * summary="Sign up",
-     * description="Sign up by name, email, password",
-     * operationId="register",
-     * tags={"Authentication"},
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Send user name, email, password and hash to sign up",
-     *    @OA\JsonContent(
-     *       required={"name", "email", "password", "password_confirmation"},
-     *       @OA\Property(property="name", type="string", example="user"),
-     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *       @OA\Property(property="password_confirmation", type="string", format="password", example="PassWord12345"),
-     *    ),
-     * ),
-     * @OA\Response(
-     *     response=201,
-     *     description="Created",
-     *     @OA\JsonContent(
-     *      ref="#/components/schemas/UserRoles",
-     *      ),
-     *    ),
-     *  ),
-     * )
-     */
     public function register(SignUpRequest $request)
     {
         try {
@@ -72,42 +44,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * @OA\Post(
-     * path="/auth/login",
-     * summary="Sign in",
-     * description="Login by email, password",
-     * operationId="login",
-     * tags={"Authentication"},
-     * @OA\RequestBody(
-     *    required=true,
-     *    description="Pass user credentials",
-     *    @OA\JsonContent(
-     *       required={"email","password"},
-     *       @OA\Property(property="email", type="string", format="email", example="user@email.com"),
-     *       @OA\Property(property="password", type="string", format="password", example="PassWord12345"),
-     *    ),
-     * ),
-     * @OA\Response(
-     *    response=422,
-     *    description="Wrong credentials response",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", example="Sorry, wrong email address or password. Please try again")
-     *        )
-     *     ),
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(
-     *       @OA\Property(property="access_token", type="string", format="access_token", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYyNjgyMzQ1OCwiZXhwIjoxNjI2ODI3MDU4LCJuYmYiOjE2MjY4MjM0NTgsImp0aSI6IkZmdWVSa21DRDVKbGJiZTUiLCJzdWIiOjEsInBydiI6IjIzd4rdsffdYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.IRcT8xxb8XqMmRCMMjEO_WZF764k6VV-gBDCXtQLBiU"),
-     *       @OA\Property(property="token_type", type="string", format="string", example="bearer"),
-     *       @OA\Property(property="expires_in", type="integer", format="string", example=3600),
-     *       @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
-     *    ),
-     *  ),
-     * )
-     *
-     */
     public function login(SignInRequest $request)
     {
         try {
@@ -123,24 +59,6 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * @OA\Post(
-     * path="/auth/logout",
-     * summary="Log out",
-     * description="Log out from user",
-     * operationId="logout",
-     * tags={"Authentication"},
-     * security={ {"bearerAuth":{}} },
-     * @OA\Response(
-     *     response=200,
-     *     description="Success",
-     *     @OA\JsonContent(
-     *       @OA\Property(property="message", type="string", format="string", example="Tokens Revoked"),
-     *    ),
-     *  ),
-     * )
-     *
-     */
     public function logout()
     {
         auth()->user()->tokens()->delete();
@@ -160,5 +78,67 @@ class AuthController extends Controller
         } catch (Exception $e) {
             return $this->error($e->getMessage(), 500);
         }
+    }
+
+    public function reset(Request $request)
+    {
+        try {
+            $password = $this->generatePassword();
+            $user = $this->userService->findByMail($request->email);
+
+            if(!empty($user)){
+                $userId = $user[0]['id'];
+                
+                //Envio de email com os acessos
+                $store = $this->userStoreService->findById($userId);
+
+                //sendMail complete register user
+                $mailRecipient = $user->email;
+                
+                $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$store->client_id;
+                
+                //mail welcome
+                $mailBody = $this->mailService->createMailPasswordPartner($user->first_name, $password, $mailRecipient, $linkStore);
+                $mailSubject = "[Parceiros Easytoque] - Seus dados de acesso e sua loja!";
+
+                $messageLog = "Dados da loja";
+                
+                $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
+
+                //update de senha
+                $this->userService->update($userId, ['password' => $password]);
+        
+                return $this->success('sucesso', HttpStatus::SUCCESS);
+            }else{
+                return response()->noContent();
+            }
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), 500);
+        }
+    }
+
+    function generatePassword($qtyCaraceters = 8)
+    {
+        //Letras minúsculas embaralhadas
+        $smallLetters = str_shuffle('abcdefghijklmnopqrstuvwxyz');
+    
+        //Letras maiúsculas embaralhadas
+        $capitalLetters = str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    
+        //Números aleatórios
+        $numbers = (((date('Ymd') / 12) * 24) + mt_rand(800, 9999));
+        $numbers .= 1234567890;
+    
+        //Caracteres Especiais
+        $specialCharacters = str_shuffle('!@#$%*-');
+    
+        //Junta tudo
+        $characters = $capitalLetters.$smallLetters.$numbers.$specialCharacters;
+    
+        //Embaralha e pega apenas a quantidade de caracteres informada no parâmetro
+        $password = substr(str_shuffle($characters), 0, $qtyCaraceters);
+    
+        //Retorna a senha
+        return $password;
     }
 }
