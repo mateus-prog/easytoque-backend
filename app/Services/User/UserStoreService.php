@@ -103,16 +103,4 @@ class UserStoreService
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'id');
         return $store[0]['id'];
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function getUserStoreByUserClientId($userId){
-        $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'client_id');
-        return $store[0]['client_id'];
-    }
-
 }
