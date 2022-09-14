@@ -69,10 +69,11 @@ class UserCorporateController extends Controller
         }
 
         $clientId = $this->storeService->getClient();
+        dd($clientId);
         
         $arrayClient = array('client_id' => $clientId);
         
-        $userCorporate = array_merge($userCorporate, $arrayClient);
+        $userCorporateBank = array_merge($userCorporateBank, $arrayClient);
 
         return $this->success($userCorporateBank, HttpStatus::SUCCESS);
     }
