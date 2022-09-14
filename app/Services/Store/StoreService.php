@@ -41,7 +41,8 @@ class StoreService
     /**
      * acessa o pagamento da loja no magento
      */
-    public function storeMagento(string $type){
+    public function storeMagento(string $type)
+    {
         $userId = Auth::user()->id;
 
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'commission, store_id');
@@ -54,7 +55,8 @@ class StoreService
 
         if($type == 'list')
         {
-            foreach($response as $key => $value){
+            foreach($response as $key => $value)
+            {
                 
                 if(isset($value['commission']))
                 { 
@@ -86,7 +88,8 @@ class StoreService
     /**
      * acessa o pagamento da loja no magento
      */
-    public function getClient(){
+    public function getClient()
+    {
         $userId = Auth::user()->id;
 
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'client_id');
@@ -94,5 +97,4 @@ class StoreService
         
         return $clientId;
     }
-
 }
