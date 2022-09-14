@@ -7,6 +7,7 @@ use App\Services\User\UserService;
 use App\Services\User\UserBankService;
 use App\Services\User\UserCorporateService;
 use App\Services\User\UserStoreService;
+use App\Services\Store\StoreService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
@@ -21,12 +22,14 @@ class UserCorporateController extends Controller
     protected $userBankService;
     protected $userCorporateService;
     protected $userStoreService;
+    protected $storeService;
     
     public function __construct(
         UserService $userService,
         UserBankService $userBankService,
         UserCorporateService $userCorporateService,
-        UserStoreService $userStoreService
+        UserStoreService $userStoreService,
+        StoreService $storeService,
     )
     {
         //$this->middleware(["auth", "verified"]);
@@ -34,6 +37,7 @@ class UserCorporateController extends Controller
         $this->userBankService = $userBankService;
         $this->userCorporateService = $userCorporateService;
         $this->userStoreService = $userStoreService;
+        $this->storeService = $storeService;
     }
 
     public function getUserCorporateByUser($userId)
@@ -63,7 +67,13 @@ class UserCorporateController extends Controller
         }else{
             $userCorporateBank = $userCorporate;
         }
+
+        $clientId = $this->storeService->getClient();
         
+        $arrayClient = array('client_id' => $clientId);
+        
+        $userCorporate = array_merge($userCorporate, $arrayClient);
+
         return $this->success($userCorporateBank, HttpStatus::SUCCESS);
     }
 
