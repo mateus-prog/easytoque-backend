@@ -92,5 +92,10 @@ class AppServiceProvider extends ServiceProvider
             'App\Repositories\Contracts\LogRepositoryInterface', 
             'App\Repositories\Elouquent\LogRepository'
         );
+
+        $this->app->bind(
+            'App\Repositories\Contracts\StoreRepositoryInterface', 
+            'App\Repositories\Elouquent\StoreRepository'
+        );
     }
 }
