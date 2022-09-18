@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('user_corporate', function (Blueprint $table) {
             $table->id();
-            $table->string('corporate_name', 50);
+            $table->string('corporate_name', 100);
             $table->string('cnpj', 18);
             $table->string('address', 40);
             $table->string('number', 10);
             $table->string('complement', 20)->nullable();
-            $table->string('district', 40);
-            $table->string('city', 40);
+            $table->string('district', 60);
+            $table->string('city', 60);
             $table->string('cep', 9);
             $table->string('url_logo', 100)->nullable();
             $table->unsignedBigInteger('state_id');

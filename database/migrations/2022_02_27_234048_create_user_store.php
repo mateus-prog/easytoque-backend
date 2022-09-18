@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('commission', 5, 2);
             $table->unsignedBigInteger('store_id')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->timestamps();
 
             $table
