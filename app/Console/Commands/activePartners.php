@@ -55,13 +55,10 @@ class activePartners extends Command
     public function handle()
     {
         $clientIdMax = 0;
-        $usersStore = $this->userStoreService->all();
-        foreach($usersStore as $userStore){
-            $clientId = $userStore->client_id;
-
-            if($clientId != '' && $clientId != null){
-                $clientIdMax = $clientId > $clientIdMax ? $clientId : $clientIdMax;
-            }
+        $stores = $this->storeService->all();
+        foreach($stores as $store){
+            $idStore = $store->id;
+            $clientIdMax = $store->client_id;
         }
 
         $users = $this->userService->all();
@@ -106,5 +103,7 @@ class activePartners extends Command
                 }
             }
         }
+
+        $this->storeService->update($idStore, ['client_id' => $clientIdMax]);
     }
 }
