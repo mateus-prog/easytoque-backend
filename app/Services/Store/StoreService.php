@@ -3,6 +3,7 @@ namespace App\Services\Store;
 
 use App\Repositories\Elouquent\UserRepository;
 use App\Repositories\Elouquent\UserStoreRepository;
+use App\Repositories\Elouquent\StoreRepository;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Exception;
@@ -15,7 +16,33 @@ class StoreService
     {
         $this->userRepository = new UserRepository();
         $this->userStoreRepository = new UserStoreRepository();
+        $this->storeRepository = new StoreRepository();
         $this->client = new Client();
+    }
+
+    /**
+     * Selecione todos os usuarios
+     * @return array
+    */
+    public function all()
+    {
+        return $this->storeRepository->all();
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, $request)
+    {
+        try {
+            return $this->storeRepository->update($id, $request);
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
