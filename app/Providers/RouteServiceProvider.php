@@ -59,7 +59,6 @@ class RouteServiceProvider extends ServiceProvider
             $this->loadApiRoute("request");
             $this->loadApiRoute("action");
             $this->loadApiRoute("logo");
-            $this->loadApiRoute("store");
 
             Route::middleware('web')
                 ->namespace($this->namespace)
