@@ -24,6 +24,7 @@ class Store extends BaseModel
     public function format()
     {
         return (object) [
+            "id" => $this->id,
             "client_id" => $this->client_id,
         ];
     }
