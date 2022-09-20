@@ -86,12 +86,10 @@ class activePartners extends Command
 
                     $this->userStoreService->update($id, $data);
                     
-                    $store = $this->userStoreService->findById(strval($id));
-
                     //sendMail complete register user
                     $mailRecipient = $user->email;
                     
-                    $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$store->client_id;
+                    $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$clientIdMax;
                     
                     //mail welcome
                     $mailBody = $this->mailService->createMailPartnerAddFinish($user->first_name, $mailRecipient, $linkStore);
