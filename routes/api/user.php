@@ -21,7 +21,7 @@ Route::get('/users/corporate/{userId}', [UserCorporateController::class, 'getUse
 Route::put("/users/bank/{userId}", [UserBankController::class, 'update']);
 
 Route::group(["middleware" => "auth:sanctum"], function () {
-    Route::group(["middleware" => ["role:administrator"]], function () {
+    Route::group(["middleware" => ["role:administrator|collaborator"]], function () {
         Route::get("/users", [UserController::class, 'index'])->middleware("permission:read-users");
         Route::get("/users/role/{roleId}", [UserController::class, 'getUsersByRole'])->middleware("permission:read-users");
         Route::get("/users/{userId}", [UserController::class, 'edit'])->middleware("permission:read-users");
