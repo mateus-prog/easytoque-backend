@@ -30,9 +30,9 @@ class MenusRolesTableSeeder extends Seeder
             ['id' => 10, 'role_id' => '1', 'menu_id' => '9'],
             ['id' => 11, 'role_id' => '1', 'menu_id' => '10'],
             ['id' => 12, 'role_id' => '2', 'menu_id' => '8'],
-            ['id' => 13, 'role_id' => '2', 'menu_id' => '10'],
+            ['id' => 13, 'role_id' => '2', 'menu_id' => '9'],
             ['id' => 14, 'role_id' => '3', 'menu_id' => '7'],
-            ['id' => 15, 'role_id' => '3', 'menu_id' => '8'],
+            ['id' => 15, 'role_id' => '3', 'menu_id' => '9'],
         ]);
     }
 }
