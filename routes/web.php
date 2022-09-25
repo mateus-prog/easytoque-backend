@@ -20,31 +20,6 @@ use App\Http\Controllers\SoapController;
 |
 */
 
-/*Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/reset-password', function (Request $request) {
-    return Inertia::render('Auth/ResetPassword', [
-        'email' => $request->query('email'),
-        'token' => $request->query('token'),
-    ]);
-});
-
-Route::get('/email/verify/success', function (Request $request) {
-    return Inertia::render('Auth/EmailVerified');
-});
-
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->name('dashboard');
-*/
-
 Route::get('/env', function () {
 
     dump(env('APP_NAME'));
