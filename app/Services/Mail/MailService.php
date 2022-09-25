@@ -246,6 +246,8 @@ class MailService
 
     public function createMailPartnerAddFinish($name, $email, $linkStore)
     {
+        $link = env('EXTERNAL_APP_URL');
+
         $body = '
             <p>Ol&aacute;, '.utf8_decode($name).'</p>
             <p>
@@ -255,7 +257,7 @@ class MailService
                 Seguem os dados de acesso do seu painel e sua loja!
             </p>
             <ul>
-                <li><b>Acesso ao painel:</b> <a href="https://parceiro.easytoque.com.br/login.php">https://parceiro.easytoque.com.br/login.php</a></li>
+                <li><b>Acesso ao painel:</b> <a href="'.$link.'">'.$link.'</a></li>
                 <li><b>E-mail de acesso:</b> '.$email.'</li>
                 <li><b>Senha de acesso:</b> <i>senha escolhida</i></li>
                 <li><b>Endere&ccedil;o da loja:</b> <a href="'.$linkStore.'">'.$linkStore.'</a></li>
@@ -267,13 +269,15 @@ class MailService
 
     public function createMailPasswordPartner($name, $password, $email)
     {
+        $link = env('EXTERNAL_APP_URL');
+
         $body = '
             <p>Ol&aacute;, '.utf8_decode($name).'</p>
             <p>
                 Seguem os dados de acesso do seu painel e sua loja!
             </p>
             <ul>
-                <li><b>Acesso ao painel:</b> <a href="https://parceiro.easytoque.com.br/login.php">https://parceiro.easytoque.com.br/login.php</a></li>
+                <li><b>Acesso ao painel:</b> <a href="'.$link.'">'.$link.'</a></li>
                 <li><b>E-mail de acesso:</b> '.$email.'</li>
                 <li><b>Senha de acesso:</b> '.$password.'</li>
             </ul>';
@@ -294,6 +298,17 @@ class MailService
         return $mailHtml;
     }
 
+    public function createMailStatusFinancial($name, $description, $value)
+    {
+        $body = '
+        <p>Parceiro: '.utf8_decode($name).'</p>
+        <p>Status da comiss&atilde;o: '.utf8_decode($description).'</p>
+        <p>Valor da comiss&atilde;o: '.$value.'</p>';
+
+        $mailHtml = $this->MailBody($body);
+        return $mailHtml;
+    }
+
     public function sendMailRequest($userId, $statusRequestId, $reason)
     {
         $user = $this->userRepository->findById($userId);
@@ -306,6 +321,26 @@ class MailService
         
         //mail welcome
         $mailBody = $this->createMailStatus($name, $description, $reason);
+        $mailSubject = '[Parceiros Easytoque] - Status da Comissao - '.ucfirst($status).' - Easytoque';
+
+        $messageLog = 'Status da Comissao - '.ucfirst($status);
+
+        $this->sendMail($mailRecipient, $mailSubject, $mailBody, $userId, $messageLog);
+    }
+
+    public function sendMailRequestFinancial($userId, $statusRequestId, $value)
+    {
+        $user = $this->userRepository->findById($userId);
+        //$mailRecipient = 'financeiro@easytoque.com.br';
+        $mailRecipient = 'mateus.guizelini@hotmail.com';
+        $name = $user->first_name . ' ' . $user->last_name;
+
+        $statusRequest = $this->statusRequestRepository->findById($statusRequestId);
+        $status = $statusRequest->name;
+        $description = $statusRequest->description;  
+        
+        //mail welcome
+        $mailBody = $this->createMailStatusFinancial($name, $description, $value);
         $mailSubject = '[Parceiros Easytoque] - Status da Comissao - '.ucfirst($status).' - Easytoque';
 
         $messageLog = 'Status da Comissao - '.ucfirst($status);

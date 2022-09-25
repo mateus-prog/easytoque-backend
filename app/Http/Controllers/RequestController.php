@@ -124,6 +124,8 @@ class RequestController extends Controller
             
             $userId = Auth::user()->id;
 
+            $value = $request->value;
+
             $request->value = str_replace('.', '', $request->value);
             $request->value = str_replace(',', '.', $request->value);
 
@@ -135,6 +137,7 @@ class RequestController extends Controller
             ]);
 
             $this->mailService->sendMailRequest($userId, 1, '');
+            $this->mailService->sendMailRequestFinancial($userId, 1, $value);
 
             return response()->noContent();
         } catch (AuthorizationException $aE) {
