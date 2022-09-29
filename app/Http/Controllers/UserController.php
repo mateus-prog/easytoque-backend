@@ -250,7 +250,6 @@ class UserController extends Controller
 
     public function deletePendente(){
         $users = $this->userService->all();
-        dd('aqui');
         foreach($users as $user)
         {
             //verifica se o usuario é Parceiro e se o status esta pendente
@@ -260,7 +259,6 @@ class UserController extends Controller
                 $dateDelete = date('Y-m-d', strtotime('+30 days', strtotime($date)));
                 if($dateDelete == date('Y-m-d'))
                 {
-                    dd($dateDelete);
                     $idStore = $this->userStoreService->getUserStoreByUser($user->id);
                     $this->userStoreService->destroy($idStore);
 
