@@ -259,6 +259,7 @@ class UserController extends Controller
                 $dateDelete = date('Y-m-d', strtotime('+30 days', strtotime($date)));
                 if($dateDelete == date('Y-m-d'))
                 {
+                    dd($dateDelete);
                     $idStore = $this->userStoreService->getUserStoreByUser($user->id);
                     $this->userStoreService->destroy($idStore);
 
