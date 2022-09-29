@@ -189,9 +189,7 @@ class UserService
      */
     public function destroy($id)
     {
-        $user = $this->userRepository->findById($id);
-
-        $this->userRepository->destroy($user);
+        $this->userRepository->destroy($id);
     }
 
 }

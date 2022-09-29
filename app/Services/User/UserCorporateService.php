@@ -95,9 +95,7 @@ class UserCorporateService
      */
     public function destroy($id)
     {
-        $user = $this->userCorporateRepository->findById($id);
-
-        $this->userCorporateRepository->destroy($user);
+        $this->userCorporateRepository->destroy($id);
     }
 
 }
