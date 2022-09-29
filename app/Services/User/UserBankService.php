@@ -102,9 +102,7 @@ class UserBankService
      */
     public function destroy($id)
     {
-        $user = $this->userBankRepository->findById($id);
-
-        $this->userBankRepository->destroy($user);
+        $this->userBankRepository->delete($id);
     }
 
 }

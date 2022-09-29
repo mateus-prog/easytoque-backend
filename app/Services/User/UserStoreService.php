@@ -77,7 +77,7 @@ class UserStoreService
      */
     public function destroy($id)
     {
-        $this->userStoreRepository->destroy($id);
+        $this->userStoreRepository->delete($id);
     }
 
     /**
