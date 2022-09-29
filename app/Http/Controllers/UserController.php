@@ -250,6 +250,7 @@ class UserController extends Controller
 
     public function deletePendente(){
         $users = $this->userService->all();
+        dd('aqui');
         foreach($users as $user)
         {
             //verifica se o usuario é Parceiro e se o status esta pendente
