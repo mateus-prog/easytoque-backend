@@ -41,6 +41,8 @@ Route::group(["middleware" => "auth:sanctum"], function () {
 
         Route::put("/users/active/{userId}", [UserController::class, 'activeUser'])->middleware("permission:delete-users");
         Route::put("/users/blocked/{userId}", [UserController::class, 'blockedUser'])->middleware("permission:delete-users");
+
+        Route::get("/users/delete", [UserController::class, 'deletePendente']);
     });
     Route::put("/users/{userId}", [UserController::class, 'update']);
     
