@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Services\User\UserService;
+use App\Services\User\UserStoreService;
+use App\Services\User\UserBankService;
+use App\Services\User\UserCorporateService;
 
 class deletePartners extends Command
 {
@@ -24,11 +27,17 @@ class deletePartners extends Command
     protected $userService;
 
     public function __construct(
-        UserService $userService
+        UserService $userService,
+        UserStoreService $userStoreService,
+        UserBankService $userBankService,
+        UserCorporateService $userCorporateService,
     )
     {
         parent::__construct();
         $this->userService = $userService;
+        $this->userStoreService = $userStoreService;
+        $this->userBankService = $userBankService;
+        $this->userCorporateService = $userCorporateService;
     }
 
     /**
@@ -48,6 +57,16 @@ class deletePartners extends Command
                 $dateDelete = date('Y-m-d', strtotime('+30 days', strtotime($date)));
                 if($dateDelete == date('Y-m-d'))
                 {
+                    $idStore = $this->userStoreService->getUserStoreByUser($user->id);
+                    $this->userStoreService->destroy($idStore);
+
+                    $idBank = $this->userBankService->getUserBankEditByUser($user->id);
+                    $this->userBankService->destroy($idBank);
+
+                    $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($user->id);
+                    $idCorporate = $userCorporate[0]['id'];
+                    $this->userCorporateService->destroy($idCorporate);
+
                     $this->userService->destroy($user->id);    
                 }
             }
