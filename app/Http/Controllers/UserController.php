@@ -263,8 +263,7 @@ class UserController extends Controller
                     $this->userStoreService->destroy($idStore);
                     
                     $idBank = $this->userBankService->getUserBankEditByUser($user->id);
-                    dd($idBank);
-                    if($idBank != null && !empty($idBank))
+                    if($idBank[0]['bank_id'] != null)
                     {
                         $this->userBankService->destroy($idBank);
                     }
