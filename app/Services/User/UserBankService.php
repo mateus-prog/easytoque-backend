@@ -50,7 +50,7 @@ class UserBankService
     */
     public function getUserBankEditByUser($userId)
     {
-        return $this->userBankRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'bank_id, agency, agency_digit, checking_account, checking_account_digit, pix');
+        return $this->userBankRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'id, bank_id, agency, agency_digit, checking_account, checking_account_digit, pix');
     }
 
     /**

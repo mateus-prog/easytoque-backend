@@ -13,10 +13,10 @@ class UserBank extends BaseModel
 
     public $table = 'user_bank_data';
 	public $fillable = [
-        'bank_id', 'agency', 'agency_digit', 'checking_account', 'checking_account_digit', 'pix', 'user_id'
+        'id', 'bank_id', 'agency', 'agency_digit', 'checking_account', 'checking_account_digit', 'pix', 'user_id'
     ];
 	public $searchable = [
-        'bank_id', 'agency', 'agency_digit', 'checking_account', 'checking_account_digit', 'pix', 'user_id'
+        'id', 'bank_id', 'agency', 'agency_digit', 'checking_account', 'checking_account_digit', 'pix', 'user_id'
     ];
 
     public $timestamps = true;
