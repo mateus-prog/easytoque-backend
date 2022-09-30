@@ -276,6 +276,8 @@ class UserController extends Controller
                         $this->userCorporateService->destroy($idCorporate);
                     }
 
+                    $this->logService->destroy($user->id);
+
                     $this->userService->destroy($user->id);    
                 }
             }

@@ -46,4 +46,23 @@ class LogService
             throw new Exception($e->getMessage());
         }
     }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($userId)
+    {
+        $logs = $this->logRepository->all();
+
+        foreach($logs as $log)
+        {
+            if($log->user_changed_id == $userId || $log->user_modified_id == $userId)
+            {
+                $this->logRepository->delete($log->id);
+            }
+        }
+    }
 }
