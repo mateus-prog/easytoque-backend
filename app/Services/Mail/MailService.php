@@ -331,8 +331,7 @@ class MailService
     public function sendMailRequestFinancial($userId, $statusRequestId, $value)
     {
         $user = $this->userRepository->findById($userId);
-        //$mailRecipient = 'financeiro@easytoque.com.br';
-        $mailRecipient = 'mateus.guizelini@hotmail.com';
+        $mailRecipient = 'financeiro@easytoque.com.br';
         $name = $user->first_name . ' ' . $user->last_name;
 
         $statusRequest = $this->statusRequestRepository->findById($statusRequestId);
