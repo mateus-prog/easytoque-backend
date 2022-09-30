@@ -7,6 +7,7 @@ use App\Services\User\UserService;
 use App\Services\User\UserStoreService;
 use App\Services\User\UserBankService;
 use App\Services\User\UserCorporateService;
+use App\Services\Log\LogService;
 
 class deletePartners extends Command
 {
@@ -25,12 +26,17 @@ class deletePartners extends Command
     protected $description = 'Comando que deleta os parceiros que estão pendentes a 30 dias';
 
     protected $userService;
+    protected $userStoreService;
+    protected $userBankService;
+    protected $userCorporateService;
+    protected $logService;
 
     public function __construct(
         UserService $userService,
         UserStoreService $userStoreService,
         UserBankService $userBankService,
         UserCorporateService $userCorporateService,
+        LogService $logService,
     )
     {
         parent::__construct();
@@ -38,6 +44,7 @@ class deletePartners extends Command
         $this->userStoreService = $userStoreService;
         $this->userBankService = $userBankService;
         $this->userCorporateService = $userCorporateService;
+        $this->logService = $logService;
     }
 
     /**
@@ -59,13 +66,22 @@ class deletePartners extends Command
                 {
                     $idStore = $this->userStoreService->getUserStoreByUser($user->id);
                     $this->userStoreService->destroy($idStore);
-
-                    $idBank = $this->userBankService->getUserBankEditByUser($user->id);
-                    $this->userBankService->destroy($idBank);
-
+                    
+                    $userBank = $this->userBankService->getUserBankEditByUser($user->id);
+                    if(isset($userBank[0]))
+                    {
+                        $idBank = $userBank[0]['id'];
+                        $this->userBankService->destroy($idBank);
+                    }
+                    
                     $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($user->id);
-                    $idCorporate = $userCorporate[0]['id'];
-                    $this->userCorporateService->destroy($idCorporate);
+                    if(isset($userCorporate[0]))
+                    {
+                        $idCorporate = $userCorporate[0]['id'];
+                        $this->userCorporateService->destroy($idCorporate);
+                    }
+
+                    $this->logService->destroy($user->id);
 
                     $this->userService->destroy($user->id);    
                 }
