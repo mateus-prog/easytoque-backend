@@ -248,40 +248,4 @@ class UserController extends Controller
         }
     }
 
-    public function deletePendente(){
-        $users = $this->userService->all();
-        foreach($users as $user)
-        {
-            //verifica se o usuario é Parceiro e se o status esta pendente
-            if($user->role_id == 4 && $user->status_user_id == 3)
-            {
-                $date = explode(' ', $user->created_at)[0];
-                $dateDelete = date('Y-m-d', strtotime('+30 days', strtotime($date)));
-                if($dateDelete == date('Y-m-d'))
-                {
-                    $idStore = $this->userStoreService->getUserStoreByUser($user->id);
-                    $this->userStoreService->destroy($idStore);
-                    
-                    $userBank = $this->userBankService->getUserBankEditByUser($user->id);
-                    if(isset($userBank[0]))
-                    {
-                        $idBank = $userBank[0]['id'];
-                        $this->userBankService->destroy($idBank);
-                    }
-                    
-                    $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($user->id);
-                    if(isset($userCorporate[0]))
-                    {
-                        $idCorporate = $userCorporate[0]['id'];
-                        $this->userCorporateService->destroy($idCorporate);
-                    }
-
-                    $this->logService->destroy($user->id);
-
-                    $this->userService->destroy($user->id);    
-                }
-            }
-        }
-    }
-
 }
