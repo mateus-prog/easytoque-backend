@@ -23,7 +23,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('active:partners')->everyMinute();
-        $schedule->command('delete:partners')->everyMinute();
         $schedule->command('delete:partners')->dailyAt('03:00');
     }
 
