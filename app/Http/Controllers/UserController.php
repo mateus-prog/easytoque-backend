@@ -260,14 +260,23 @@ class UserController extends Controller
                 if($dateDelete == date('Y-m-d'))
                 {
                     $idStore = $this->userStoreService->getUserStoreByUser($user->id);
-                    $this->userStoreService->destroy($idStore);
-
+                    if($idStore != null)
+                    {
+                        $this->userStoreService->destroy($idStore);
+                    }
+                    
                     $idBank = $this->userBankService->getUserBankEditByUser($user->id);
-                    $this->userBankService->destroy($idBank);
-
+                    if($idBank != null)
+                    {
+                        $this->userBankService->destroy($idBank);
+                    }
+                    
                     $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($user->id);
-                    $idCorporate = $userCorporate[0]['id'];
-                    $this->userCorporateService->destroy($idCorporate);
+                    if(isset($userCorporate[0]))
+                    {
+                        $idCorporate = $userCorporate[0]['id'];
+                        $this->userCorporateService->destroy($idCorporate);
+                    }
 
                     $this->userService->destroy($user->id);    
                 }
