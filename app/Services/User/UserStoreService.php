@@ -99,13 +99,7 @@ class UserStoreService
      */
     public function getUserStoreByUser($userId){
         $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'id');
-        if(isset($store[0]))
-        {
-            return $store[0]['id'];
-        }else{
-            return null;
-        }
-        
+        return $store[0]['id'];
     }
 
     /**

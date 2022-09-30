@@ -260,10 +260,7 @@ class UserController extends Controller
                 if($dateDelete == date('Y-m-d'))
                 {
                     $idStore = $this->userStoreService->getUserStoreByUser($user->id);
-                    if($idStore != null)
-                    {
-                        $this->userStoreService->destroy($idStore);
-                    }
+                    $this->userStoreService->destroy($idStore);
                     
                     $idBank = $this->userBankService->getUserBankEditByUser($user->id);
                     if($idBank != null)
