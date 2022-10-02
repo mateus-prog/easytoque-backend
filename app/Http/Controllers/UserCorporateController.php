@@ -43,9 +43,9 @@ class UserCorporateController extends Controller
         return $this->success($userCorporate, HttpStatus::SUCCESS);
     }
 
-    public function getUserCorporateEditByUser($userId)
+    public function getUserCorporateEditByUser($hash)
     {
-        $user = $this->userService->findByHash($userId);
+        $user = $this->userService->findByHash($hash);
         if(empty($user)){
             return response()->noContent();
         }   
