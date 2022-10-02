@@ -50,6 +50,16 @@ class UserCorporateService
     }
 
     /**
+     * Selecione o cnpj para saber o usuario
+     * @param  int  $cnpj
+     * @return array
+    */
+    public function checkCnpj($cnpj)
+    {
+        return $this->userCorporateRepository->findByFieldWhereReturnArray('cnpj', '=', $cnpj, 'user_id');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

@@ -39,6 +39,7 @@ Route::group(["middleware" => "auth:sanctum"], function () {
             "permission:update-users"
         );
 
+        Route::post("/users/checkCnpj", [UserController::class, 'checkCnpj'])->middleware("permission:read-users");
         Route::put("/users/active/{userId}", [UserController::class, 'activeUser'])->middleware("permission:delete-users");
         Route::put("/users/blocked/{userId}", [UserController::class, 'blockedUser'])->middleware("permission:delete-users");
     });

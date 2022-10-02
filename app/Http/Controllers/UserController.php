@@ -237,6 +237,27 @@ class UserController extends Controller
         }
     }
 
+    public function checkCnpj(Request $request)
+    {
+        try {
+            //Gate::authorize('update', User::findOrFail($id));
+            $userCnpj = $this->userCorporateService->checkCnpj($request['cnpj']);
+
+            if(isset($userCnpj[0])){
+                $userId = $userCnpj[0]['user_id'];
+            }else{
+                $userId = 0;
+            }
+            return $this->success($userId, HttpStatus::SUCCESS);
+        } catch (AuthorizationException $aE) {
+            return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
+        } catch (ModelNotFoundException $m) {
+            return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
     public function destroy($id)
     {
         try {
