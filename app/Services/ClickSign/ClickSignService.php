@@ -22,12 +22,13 @@ class ClickSignService
 
     public function __construct()
     {
-        //$this->_token = 'ba466851-5de6-4fa0-9d5a-6871f57167d9';
-        //$this->_environment = 'https://app.clicksign.com'; 
-        //$this->_keyTemplateDocument = '7d037718-f24c-4202-bfa0-e5adc58ae553';
-        $this->_token = 'b8519293-a6df-4c92-b68b-711f836e1a49';
+        $this->_token = 'ba466851-5de6-4fa0-9d5a-6871f57167d9';
+        $this->_environment = 'https://app.clicksign.com'; 
+        $this->_keyTemplateDocument = '7d037718-f24c-4202-bfa0-e5adc58ae553';
+        //variaveis de ambiente teste
+        /*$this->_token = 'b8519293-a6df-4c92-b68b-711f836e1a49';
         $this->_environment = 'https://sandbox.clicksign.com';
-        $this->_keyTemplateDocument = 'ebdfb8ca-16d4-4076-8dbc-557ae3de1cce';
+        $this->_keyTemplateDocument = 'ebdfb8ca-16d4-4076-8dbc-557ae3de1cce';*/
 
         $this->userRepository = new UserRepository();
         $this->userCorporateRepository = new UserCorporateRepository();
