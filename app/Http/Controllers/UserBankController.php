@@ -48,7 +48,7 @@ class UserBankController extends Controller
 
     public function update($id, Request $request)
     {
-        //try {
+        try {
             $input = $request->only(["bank_id", "agency", "agency_digit", "checking_account", "checking_account_digit", "pix"]);
             $this->userBankService->update($id, $input);
 
@@ -82,13 +82,13 @@ class UserBankController extends Controller
             }
 
             return response()->noContent();
-        /*} catch (AuthorizationException $aE) {
+        } catch (AuthorizationException $aE) {
             return $this->error($aE->getMessage(), HttpStatus::FORBIDDEN);
         } catch (ModelNotFoundException $m) {
             return $this->error($m->getMessage(), HttpStatus::NOT_FOUND);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
-        }*/
+        }
     }
 
 }
