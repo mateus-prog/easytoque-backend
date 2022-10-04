@@ -82,18 +82,25 @@ class UserBankService
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function getUser($id)
+    {   
+        return $this->userBankRepository->findByFieldWhereReturnArray('id', '=', $id, 'user_id');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update($id, $request)
     {   
-        $userBank = $this->userBankRepository->findByFieldWhereReturnArray('user_id', '=', $id, 'id');
-        $id = $userBank[0]['id'];
-
-        dd($request);
-
-        //try {
+        try {
             return $this->userBankRepository->update($id, $request);
-        /*} catch (Exception $e) {
+        } catch (Exception $e) {
             throw new Exception($e->getMessage());
-        }*/
+        }
     }
 
     /**
