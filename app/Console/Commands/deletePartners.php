@@ -74,7 +74,7 @@ class deletePartners extends Command
                         $this->userBankService->destroy($idBank);
                     }
                     
-                    $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($user->id);
+                    $userCorporate = $this->userCorporateService->getUserCorporateEditById($user->id);
                     if(isset($userCorporate[0]))
                     {
                         $idCorporate = $userCorporate[0]['id'];

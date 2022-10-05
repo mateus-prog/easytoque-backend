@@ -46,7 +46,17 @@ class UserCorporateService
     */
     public function getUserCorporateEditByUser($userId)
     {
-        return $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'corporate_name, cnpj, id');
+        return $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'corporate_name, cnpj');
+    }
+
+    /**
+     * Selecione os usuarios conforme o role
+     * @param  int  $id
+     * @return array
+    */
+    public function getUserCorporateEditById($userId)
+    {
+        return $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'id');
     }
 
     /**

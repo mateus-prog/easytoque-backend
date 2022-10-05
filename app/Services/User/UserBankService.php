@@ -97,6 +97,9 @@ class UserBankService
     public function update($id, $request)
     {   
         try {
+            $userBank = $this->userBankRepository->findByFieldWhereReturnArray('user_id', '=', $id, 'id');
+            $id = $userBank[0]['id'];
+
             return $this->userBankRepository->update($id, $request);
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
