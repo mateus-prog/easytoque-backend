@@ -66,6 +66,7 @@ class UserCorporateController extends Controller
 
         $clientId = $this->userStoreService->getUserStoreByUserClientId($userId);
         $userCorporateBank['client_id'] = $clientId;
+        $userCorporateBank['user_id'] = $userId;
 
         return $this->success($userCorporateBank, HttpStatus::SUCCESS);
     }
