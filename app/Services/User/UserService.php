@@ -104,7 +104,7 @@ class UserService
      */
     public function getUserByUser(int $id)
     {
-        return $this->userRepository->findByFieldWhereReturnArray('id', '=', $id, 'id, first_name, last_name, email, phone, whatsapp');
+        return $this->userRepository->findByFieldWhereReturnArray('id', '=', $id, 'id, first_name, last_name, email, phone, whatsapp, cpf');
     }
 
     /**
