@@ -142,11 +142,13 @@ class UserController extends Controller
     public function edit($id)
     {
         try {
-            $user = $this->userService->findById($id);
+            //$user = $this->userService->findById($id);
 
+            $user = $this->userService->getUserByUser($id);
+        
             $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($id);
-            $user = array_merge($userCorporate[0], $user);
-            
+            $user = array_merge($userCorporate[0], $user[0]); 
+
             return $this->success($user, HttpStatus::SUCCESS);
         } catch (Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
