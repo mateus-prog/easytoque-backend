@@ -147,7 +147,10 @@ class UserController extends Controller
             $user = $this->userService->getUserByUser($id);
         
             $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($id);
+            $userStore = $this->userStoreService->getUserStoreByUserComission($id);
+
             $user = array_merge($userCorporate[0], $user[0]); 
+            $user = array_merge($userStore, $user); 
 
             return $this->success($user, HttpStatus::SUCCESS);
         } catch (Exception $e) {
