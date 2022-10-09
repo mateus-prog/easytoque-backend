@@ -143,6 +143,9 @@ class UserController extends Controller
     {
         try {
             $user = $this->userService->findById($id);
+
+            $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($id);
+            $user = array_merge($userCorporate[0], $user);
             
             return $this->success($user, HttpStatus::SUCCESS);
         } catch (Exception $e) {
