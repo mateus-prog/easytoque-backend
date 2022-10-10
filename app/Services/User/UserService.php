@@ -51,8 +51,9 @@ class UserService
             $user->role_id = $user->role_id->display_name;
 
             if($roleId == 4){
-                $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'commission');
+                $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'commission, client_id');
                 $user->commission = str_replace('.', ',', $store[0]['commission']);
+                $user->client_id = str_replace('.', ',', $store[0]['client_id']);
                 
                 $corporate = $this->userCorporateRepository->findByFieldWhereReturnArray('user_id', '=', $user->id, 'cnpj, state_id');
                 $user->cnpj = $corporate[0]['cnpj'];
