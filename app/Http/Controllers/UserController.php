@@ -158,17 +158,6 @@ class UserController extends Controller
         }
     }
 
-    public function getStoreByUser($id)
-    {
-        try {
-            $userStore = $this->userStoreService->getUserStoreByUserComission($id);
-
-            return $this->success($userStore, HttpStatus::SUCCESS);
-        } catch (Exception $e) {
-            return $this->error($e->getMessage(), $e->getCode());
-        }
-    }
-
     public function update($id, Request $request)
     {
         try {
