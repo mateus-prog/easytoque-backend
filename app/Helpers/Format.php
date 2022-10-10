@@ -45,11 +45,11 @@ abstract class Format {
 
 		// Até 9 dígitos
 		if (strlen($number) <= 9) {
-			return preg_replace('/(\d{4})(\d*)/', '$1-$2', $number);
+			return preg_replace('/(\d{5})(\d*)/', '$1-$2', $number);
 		}
 
 		// Demais formatos
-		return preg_replace('/(\d{2})(\d{4})(\d*)/', '($1) $2-$3', $number);
+		return preg_replace('/(\d{2})(\d{5})(\d*)/', '($1) $2-$3', $number);
 	}
 
 	/**
