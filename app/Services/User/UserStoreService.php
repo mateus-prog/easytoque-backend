@@ -87,7 +87,7 @@ class UserStoreService
      * @return \Illuminate\Http\Response
      */
     public function getUserStoreByUserComission($userId){
-        $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'commission');
+        $store = $this->userStoreRepository->findByFieldWhereReturnArray('user_id', '=', $userId, 'commission, store_id, client_id');
         return $store[0];
     }
 
