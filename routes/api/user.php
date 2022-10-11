@@ -24,6 +24,7 @@ Route::group(["middleware" => "auth:sanctum"], function () {
     Route::group(["middleware" => ["role:administrator|collaborator|financial"]], function () {
         Route::get("/users", [UserController::class, 'index'])->middleware("permission:read-users");
         Route::get("/users/role/{roleId}", [UserController::class, 'getUsersByRole'])->middleware("permission:read-users");
+        Route::get("/users/sendMailWelcome/{userId}", [UserController::class, 'sendMailWelcome'])->middleware("permission:read-users");
         Route::get("/users/{userId}", [UserController::class, 'edit'])->middleware("permission:read-users");
         
         Route::post("/users", [UserController::class, 'store'])->middleware("permission:create-users");

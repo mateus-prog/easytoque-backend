@@ -139,6 +139,38 @@ class UserController extends Controller
         }
     }
 
+    public function sendMailWelcome($id)
+    {
+        try {  
+
+            $user = $this->userService->findById($id);
+            
+            $mailRecipient = $user->email;
+            $name = $user->first_name;
+            
+            //mail welcome
+            $mailBody = $this->mailService->createMailWelcomeBody($name);
+            $mailSubject = utf8_decode($name) . ", bem vindo parceiro Easytoque";
+
+            $messageLog = "Bem vindo ao Easytoque";
+
+            $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $id, $messageLog);
+
+            //mail complete Data Bank
+            $link = env('EXTERNAL_APP_URL').'/partners/edit-bank-data/'.$user->hash_id;
+            $mailBody = $this->mailService->createMailDataBankUserBody($name, $link);
+            $mailSubject = utf8_decode($name) . ", complete seu cadastro como parceiro Easytoque";
+
+            $messageLog = "Complete seu cadastro como parceiro Easytoque";                
+
+            $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $id, $messageLog);
+
+            return $this->success($user, HttpStatus::SUCCESS);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
     public function edit($id)
     {
         try {
