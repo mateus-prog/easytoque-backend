@@ -171,6 +171,34 @@ class UserController extends Controller
         }
     }
 
+    public function sendMailPartnerFinish($id)
+    {
+        try {  
+
+            $user = $this->userService->findById($id);
+            
+            //sendMail complete register user
+            $mailRecipient = $user->email;
+            $name = $user->first_name;
+            
+            $clientId  = $this->userStoreService->getUserStoreByUserClientId($id);
+
+            $linkStore = 'https://loja.easytoque.com.br/?___store=loja_'.$clientId;
+            
+            //mail welcome
+            $mailBody = $this->mailService->createMailPartnerAddFinish($name, $mailRecipient, $linkStore);
+            $mailSubject = "[Parceiros Easytoque] - Seus dados de acesso e sua loja!";
+
+            $messageLog = "Dados da loja";
+            
+            $this->mailService->sendMail($mailRecipient, $mailSubject, $mailBody, $user->id, $messageLog);
+
+            return $this->success($user, HttpStatus::SUCCESS);
+        } catch (Exception $e) {
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
     public function edit($id)
     {
         try {
