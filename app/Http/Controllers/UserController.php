@@ -208,7 +208,7 @@ class UserController extends Controller
         
             $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($id);
             $userStore = $this->userStoreService->getUserStoreByUserComission($id);
-            $userStore->comission = intval($userStore->comission);
+            $userStore['commission'] = intval($userStore['commission']);
 
             $user = array_merge($userCorporate[0], $user[0]); 
             $user = array_merge($userStore, $user); 
