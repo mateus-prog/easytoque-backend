@@ -234,7 +234,7 @@ class UserController extends Controller
             $log = Log::createLog($idUserLog, $messageLog, $actionId);
 
             //verifica se no request vem o campo role_id e faz o update
-            if($request['role_id'] == 4){
+            if($user->role_id == 4){
 
                 $input = $request->only(["first_name", "last_name", "email", "phone", "whatsapp", "cpf", "hash_id"]);
                 $this->userService->update($userId, $input);
