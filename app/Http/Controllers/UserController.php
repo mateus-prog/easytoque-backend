@@ -214,6 +214,10 @@ class UserController extends Controller
 
                 $user = array_merge($userCorporate[0], $user[0]); 
                 $user = array_merge($userStore, $user);
+            }
+            else
+            {
+                $user = $this->userService->findById($id);
             } 
 
             return $this->success($user, HttpStatus::SUCCESS);
