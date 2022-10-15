@@ -202,22 +202,18 @@ class UserController extends Controller
     public function edit($id)
     {
         try {
-            //$user = $this->userService->findById($id);
-
-            $user = $this->userService->getUserByUser($id);
+            $user = $this->userService->findById($id);
 
             if($user->role_id == 4)
             {
+                $user = $this->userService->getUserByUser($id);
+
                 $userCorporate = $this->userCorporateService->getUserCorporateEditByUser($id);
                 $userStore = $this->userStoreService->getUserStoreByUserComission($id);
                 $userStore['commission'] = intval($userStore['commission']);
 
                 $user = array_merge($userCorporate[0], $user[0]); 
                 $user = array_merge($userStore, $user);
-            }
-            else
-            {
-                $user = $this->userService->findById($id);
             } 
 
             return $this->success($user, HttpStatus::SUCCESS);
