@@ -224,7 +224,6 @@ class UserController extends Controller
             //Gate::authorize('update', User::findOrFail($id));
 
             $user = $this->userService->findById($id);
-            $status = $this->statusUserService->findById($user->status_user_id);
             $role = $this->roleService->findById($user->role_id);
             
             $messageLog = $role['display_name'];
@@ -234,13 +233,31 @@ class UserController extends Controller
 
             $log = Log::createLog($idUserLog, $messageLog, $actionId);
 
-            $input = $request->only(["first_name", "last_name", "password", "role_id", "email"]);
-            $this->userService->update($userId, $input);
-
             //verifica se no request vem o campo role_id e faz o update
-            if($request['role_id']){
+            if($request['role_id'] == 4){
+
+                $input = $request->only(["first_name", "last_name", "email", "phone", "whatsapp", "cpf", "hash_id"]);
+                $this->userService->update($userId, $input);
+
+                $userCorporate = $this->userCorporateService->getUserCorporateByUser($userId);
+                $userCorporate = $userCorporate[0];
+
+                $input = $request->only(["corporate_name", "cnpj", "address", "number", "complement", "district", "city", "cep", "state_id"]);
+                $userCorporate = $this->userCorporateService->update($userCorporate->id, $input);
+
+                $id = $this->userStoreService->getUserStoreByUser($userId);
+
+                $input = $request->only(["commission"]);
+                $userStore = $this->userStoreService->update($id, $input);
+
+            }else{
+
+                $input = $request->only(["first_name", "last_name", "password", "role_id", "email"]);
+                $this->userService->update($userId, $input);
+
                 $idUserRole = $this->userRoleService->getUser($userId)[0]['id'];
                 $this->userRoleService->update($idUserRole, ['role_id' => $request['role_id']]);
+            
             }
 
             $this->logService->store($log);
