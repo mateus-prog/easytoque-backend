@@ -40,8 +40,7 @@ class User extends Authenticatable
         'phone',
         'whatsapp',
         'cpf',
-        'hash_id',
-        'senha_hash'
+        'hash_id'
     ];
 
     /**
@@ -81,7 +80,6 @@ class User extends Authenticatable
             "cpf" => Format::cpf($this->cpf),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at,
-            "senha_hash" => $this->senha_hash,
             "password" => $this->password,
             "roles" => $this->roles()
                 ->get()
