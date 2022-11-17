@@ -95,8 +95,8 @@ class UserCorporateController extends Controller
                         'senha_hash' => '1',
                     );
                 }
-
-                //$this->userService->update($user->id, $data);
+                
+                $this->userService->update($user->id, $data);
             }
         }
     }
