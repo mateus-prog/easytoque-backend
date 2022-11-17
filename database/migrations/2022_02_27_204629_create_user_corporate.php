@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('corporate_name', 100);
             $table->string('cnpj', 18);
-            $table->string('address', 40);
+            $table->string('address', 50);
             $table->string('number', 10);
             $table->string('complement', 20)->nullable();
             $table->string('district', 60);
