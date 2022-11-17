@@ -10,8 +10,6 @@ use App\Services\User\UserStoreService;
 use App\Traits\ApiResponser;
 use App\Traits\Pagination;
 
-use Illuminate\Support\Facades\Hash;
-
 class UserCorporateController extends Controller
 {
     use ApiResponser;
@@ -69,37 +67,5 @@ class UserCorporateController extends Controller
         $userCorporateBank['user_id'] = $userId;
 
         return $this->success($userCorporateBank, HttpStatus::SUCCESS);
-    }
-
-    
-    //retirar esse metodo
-    public function getUserHash(){
-        $users = $this->userService->all();
-        foreach($users as $user)
-        {
-            //verifica se o usuario é Parceiro e se o status esta pendente
-            if($user->role_id == 4 && $user->senha_hash == '0')
-            {
-                $hash_id = str_replace('/', '', Hash::make($user->email));
-
-                if($user->status_user_id == 1){
-
-                    $data = array(
-                        'password' => $user->password,
-                        'hash_id' => $hash_id,
-                        'senha_hash' => '1',
-                    );
-
-                    $this->userService->update($user->id, $data);
-                }else{
-                    $data = array(
-                        'hash_id' => $hash_id,
-                        'senha_hash' => '1',
-                    );
-
-                    $this->userService->update($user->id, $data);
-                }
-            }
-        }
     }
 }

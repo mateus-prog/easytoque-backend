@@ -3,11 +3,12 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Http;
-use App\Http\Controllers\UserCorporateController;
+use App\Models\User;
 use App\Http\Controllers\SoapController;
+
+use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,3 +29,31 @@ Route::get('/env', function () {
 });
 
 Route::get('/teste', [SoapController::class, 'index']);
+
+Route::get('/hash', function(){
+    $users = User::all();
+    foreach($users as $user)
+    {
+        //verifica se o usuario é Parceiro e se o status esta pendente
+        if($user->role_id == 4 && $user->senha_hash == '0')
+        {
+            $hash_id = str_replace('/', '', Hash::make($user->email));
+
+            if($user->status_user_id == 1){
+
+                $data = array(
+                    'password' => $user->password,
+                    'hash_id' => $hash_id,
+                    'senha_hash' => '1',
+                );
+            }else{
+                $data = array(
+                    'hash_id' => $hash_id,
+                    'senha_hash' => '1',
+                );
+            }
+
+            $user->update($user->id, $data);
+        }
+    }
+});
