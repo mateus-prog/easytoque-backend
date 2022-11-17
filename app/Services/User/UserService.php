@@ -139,13 +139,13 @@ class UserService
      */
     public function update($id, $request)
     {
-        try {
+        //try {
             if(isset($request['password'])){ $request['password'] = Hash::make($request['password']); }
             if(isset($request['email'])){ $request['hash_id'] = str_replace('/', '', Hash::make($request['email'])); }
             return $this->userRepository->update($id, $request);
-        } catch (Exception $e) {
+        /*} catch (Exception $e) {
             throw new Exception($e->getMessage());
-        }
+        }*/
     }
 
     /**
