@@ -353,11 +353,11 @@ class ClickSignService
                     if($resultClickSign['document']['status'] == 'closed'){
                         $this->userRepository->update($userId, ['status_user_id' => '1']);
                     }else{
-                        $messageLog = "Documento ainda não assinado ou cancelado na ClickSign";
+                        /*$messageLog = "Documento ainda não assinado ou cancelado na ClickSign";
                         $actionId = 1;
                         
                         $log = Log::createLog($idUserLog, $messageLog, $actionId, false);
-                        $this->logRepository->store($log);
+                        $this->logRepository->store($log);*/
                     }
                 }
             }else{
