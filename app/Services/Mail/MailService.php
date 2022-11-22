@@ -74,7 +74,6 @@ class MailService
             );
             
             $mail->setFrom($mailTo, 'Parceiros Easytoque');
-            $mailRecipient = 'parceiros@easytoque.com.br';
             $mail->addAddress($mailRecipient); //email do destinatario
             //$mail->addCC($request->emailCc); //email com cópia para
             $mail->addBCC('parceiros@toquecolor.com.br'); //email com cópia oculta para
